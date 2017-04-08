@@ -3,17 +3,18 @@
 require_once("db.php");
 
 if (isset($_POST['submit'])) {
-	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']));
-	$last_name = mysqli_real_escape_string($connect, ($_POST['last_name']));
-	$username = mysqli_real_escape_string($connect, ($_POST['username']));
-	$email = mysqli_real_escape_string($connect, ($_POST['email']));
-	$password = mysqli_real_escape_string($connect, ($_POST['password']));
-	
-	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password) VALUES(?, ?, ?, ?, ?)");
+	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']) );
+	$last_name  = mysqli_real_escape_string($connect, ($_POST['last_name'])  );
+	$username   = mysqli_real_escape_string($connect, ($_POST['username'])   );
+	$email      = mysqli_real_escape_string($connect, ($_POST['email'])      );
+	$password   = mysqli_real_escape_string($connect, ($_POST['password'])   );
+	$points     = mysqli_real_escape_string($connect, 0                      );
+
+	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password, points) VALUES(?, ?, ?, ?, ?, ?)");
 
 	if(!$stmt) {}
 	else {
-		$stmt->bind_param("sssss", $first_name, $last_name, $username, $email, $password);
+		$stmt->bind_param("ssssss", $first_name, $last_name, $username, $email, $password, $points);
 		$stmt->execute();
 		$rows =  $stmt->affected_rows;
 		$stmt->close();
