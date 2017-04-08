@@ -1,0 +1,67 @@
+#button-wrap {
+    list-style-type: none;
+    -webkit-column-count: 3;
+        -moz-column-count: 3;
+            column-count: 3;
+
+}
+
+.java {
+    background: url('../images/java.png');
+    background-size: 200px 200px;
+}
+
+.python {
+    background: url('../images/python.png');
+    background-size: 200px 200px;
+}
+
+.c {
+    background: url('../images/c.png');
+    background-size: 200px 200px;
+}
+
+.js {
+    background: url('../images/js.png');
+    background-size: 200px 200px;
+}
+
+.ruby {
+    background: url('../images/ruby.png');
+    background-size: 200px 200px;
+}
+
+.php {
+    background: url('../images/php.png');
+    background-size: 200px 200px;
+}
+
+.center {
+    text-align: center;
+}
+
+.button {
+    -webkit-border-radius: 20px;
+       -moz-border-radius: 20px;
+            border-radius: 20px;
+    display: block;
+    height: 200px;
+    width: 200px;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "Monaco", "Andale Mono", "Courier New";
+    opacity: 0.2;
+}
+
+.button:hover {
+    background-color: #FFFFFF;
+    text-decoration: underline;
+    opacity: 1;
+    transition: opacity .40s ease-in-out;
+    -moz-transition: opacity .40s ease-in-out;
+    -webkit-transition: opacity .40s ease-in-out;
+}
