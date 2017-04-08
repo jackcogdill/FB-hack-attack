@@ -7,6 +7,9 @@ $bad_notice = '';
 if (isset($_GET['taken'])) {
 	$bad_notice = 'Username has already been taken';
 }
+else if (isset($_GET['blank'])) {
+	$bad_notice = 'Cannot leave fields blank';
+}
 
 if (isset($_POST['submit'])) {
 	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']) );
@@ -15,6 +18,11 @@ if (isset($_POST['submit'])) {
 	$email      = mysqli_real_escape_string($connect, ($_POST['email'])      );
 	$password   = mysqli_real_escape_string($connect, ($_POST['password'])   );
 	$points     = mysqli_real_escape_string($connect, 0                      );
+
+	if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
+		header('Location: /register/index.php?blank');
+		die("Redirecting");
+	}
 
 	// Make sure username is unique
 	$select = "

@@ -41,6 +41,10 @@ input.login::-moz-placeholder {          color: #ccc; } /* Firefox 19+ */
 input.login:-ms-input-placeholder {      color: #ccc; } /* IE 10+ */
 input.login:-moz-placeholder {           color: #ccc; } /* Firefox 18- */
 
+input.login:focus {
+	border-bottom: 2px #88d388 solid;
+}
+
 #login-after {
 	text-align: center;
 }
