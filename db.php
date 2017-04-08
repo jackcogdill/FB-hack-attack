@@ -1,12 +1,14 @@
 <?php
 
-define("DB_SERVER", "localhost");
-define("DB_USER", "quizer");
-define("DB_PASSWORD", "quizme");
-define("DB_NAME", "quiz");
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-$connect = mysqli_connect(DB_SERVER, DB_USER, DB_PASSWORD, DB_NAME);
-mysqli_set_charset($connect, "utf8");
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
+
+$conn = new mysqli($server, $username, $password, $db);
+mysqli_set_charset($conn, "utf8");
 
 if (mysqli_connect_errno()) {
 	// die("Database connection failed: " .
