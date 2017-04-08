@@ -9,21 +9,21 @@ if (!empty($_SESSION['user'])) {
 	die("Redirecting");
 }
 
-if (isset($_POST)) {
-	$user = '';
-	$pass = '';
+$notice = '';
 
-	if (empty($_POST['username'])) {
-		// echo "Please enter a username";
-	}
-	else {
+if (isset($_GET['registered'])) {
+	$notice = 'Successfully registered! Now you can login below';
+}
+
+if (isset($_POST)) {
+	$user   = '';
+	$pass   = '';
+
+	if (!empty($_POST['username'])) {
 		$user = mysqli_real_escape_string($connect, $_POST['username']);
 	}
 
-	if (empty($_POST['password'])) {
-		// echo "Please enter a password";
-	}
-	else {
+	if (!empty($_POST['password'])) {
 		$pass = mysqli_real_escape_string($connect, $_POST['password']);
 	}
 	
@@ -63,7 +63,7 @@ if (isset($_POST)) {
 <html>
 <head>
 	<title>Quiz</title>
-	<link rel="stylesheet" type="text/css" href="/index.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
 	<style type="text/css">
 		input
 {
@@ -75,13 +75,23 @@ if (isset($_POST)) {
 	</style>
 </head>
 <body>
-<span>H</span><span>A</span><span>C</span><span>K</span>
+<?php
+
+if (!empty($notice)) {
+?>
+<div class="notice">
+<?php echo $notice; ?>
+</div>
+<?php
+}
+
+?>
 <form method="post" action="/login/index.php">
 	<input type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
 	<input type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
 
-	<button type="submit" id="loginbtn" name="submit">Login </button>
+	<button type="submit" id="loginbtn" name="submit">Login</button>
 </form>
-<a href="register.php" id="register"> Register </a>
+Not signed up? <a href="/register" id="register">Register</a>
 </body>
 </html>

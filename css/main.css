@@ -1,0 +1,25 @@
+form {
+    position: absolute;
+    top: 300px;
+    left: 500px;
+}
+
+#loginbtn {
+    position: absolute;
+    margin-left: 50px;
+}
+
+#register {
+    
+}
+
+input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 2px #d3d3d3 solid;
+}
+
+.notice {
+    color: green;
+}

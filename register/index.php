@@ -1,6 +1,7 @@
 <?php
 
-require_once("db.php");
+$root = $_SERVER["DOCUMENT_ROOT"];
+require_once($root . "/db.php");
 
 if (isset($_POST['submit'])) {
 	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']) );
@@ -18,6 +19,10 @@ if (isset($_POST['submit'])) {
 		$stmt->execute();
 		$rows =  $stmt->affected_rows;
 		$stmt->close();
+
+		// Redirect the user
+		header("Location: /login?registered");
+		die("Redirecting");
 	}
 }
 
@@ -30,7 +35,7 @@ if (isset($_POST['submit'])) {
 		form
 		{
 			position: absolute;
-			top:230px;
+			top: 230px;
 			left: 500px;
 		}
 		input
@@ -43,7 +48,7 @@ if (isset($_POST['submit'])) {
 	</style>
 </head>
 <body>
-<form action="register.php" method="POST">
+<form action="/register/index.php" method="POST">
 	<input type="text" name="first_name" placeholder="First Name"> <br> <br>
 	<input type="text" name="last_name" placeholder="Last Name"> <br> <br>
 	<input type="text" name="username" placeholder="Username"> <br><br>

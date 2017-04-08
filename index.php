@@ -12,7 +12,7 @@ $name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
 	<head>
 		<meta charset="utf-8">
 		<title>Test</title>
-		<link rel="stylesheet" href="assets/stylesheets/main.css">
+		<link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
 		<div>Welcome, <?php echo $name; ?>.</div>
