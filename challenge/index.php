@@ -32,7 +32,30 @@ if (!empty($_POST['code'])) {
 	// Compare user output with expected output
 	$out = trim($out);
 	$out_correct = trim($out_correct);
-	$answer = ($out === $out_correct) ? $correct_str : $incorrect_str;
+	$answer = '';
+
+	if ($out === $out_correct) {
+		$answer = $correct_str;
+
+		// Give 1 point to the user
+		$points = $_SESSION['user']['points'];
+
+		// Update session
+		$_SESSION['user']['points'] = $_SESSION['user']['points'] + 1;
+
+		// Update database
+		$user   = $_SESSION['user']['username'];
+		$update = "
+			UPDATE users
+			SET points = points + 1
+			WHERE username = '{$user}'
+		";
+
+		$query = mysqli_query($connect, $update);
+	}
+	else {
+		$answer = $incorrect_str;
+	}
 }
 
 
@@ -46,7 +69,7 @@ require_once("../header.php");
 
 ?>
 
-<form id="challenge" action="/challenge" method="post">
+<form id="challenge" action="/challenge/index.php" method="post">
 	<div id="challenge-info">
 		<?php echo $chall_info; ?>
 	</div>
