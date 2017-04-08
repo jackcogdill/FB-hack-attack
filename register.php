@@ -25,6 +25,21 @@ if (isset($_POST['submit'])) {
 <html>
 <head>
 	<title></title>
+	<style type="text/css">
+		form
+		{
+			position: absolute;
+			top:230px;
+			left: 500px;
+		}
+		input
+		{
+			border: 0;
+			outline: 0;
+			background: transparent;
+			border-bottom: 2px #d3d3d3 solid;
+		}
+	</style>
 </head>
 <body>
 <form action="register.php" method="POST">

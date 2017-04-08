@@ -25,6 +25,15 @@ if (isset($_POST['submit'])) {
 <head>
 	<title>Quiz</title>
 	<link rel="stylesheet" type="text/css" href="index.css">
+	<style type="text/css">
+		input
+{
+	border: 0;
+	outline: 0;
+	background: transparent;
+	border-bottom: 2px #d3d3d3 solid;
+}
+	</style>
 </head>
 <body>
 <span>H</span><span>A</span><span>C</span><span>K</span>
