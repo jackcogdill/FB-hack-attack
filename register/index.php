@@ -26,35 +26,22 @@ if (isset($_POST['submit'])) {
 	}
 }
 
+require_once($root . "/head_top.php");
+require_once($root . "/head_bottom.php");
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-	<style type="text/css">
-		form
-		{
-			position: absolute;
-			top: 230px;
-			left: 500px;
-		}
-		input
-		{
-			border: 0;
-			outline: 0;
-			background: transparent;
-			border-bottom: 2px #d3d3d3 solid;
-		}
-	</style>
-</head>
-<body>
-<form action="/register/index.php" method="POST">
-	<input type="text" name="first_name" placeholder="First Name"> <br> <br>
-	<input type="text" name="last_name" placeholder="Last Name"> <br> <br>
-	<input type="text" name="username" placeholder="Username"> <br><br>
-	<input type="email" name="email" placeholder="Email"> <br><br>
-	<input type="password" name="password" placeholder="Password"> <br> <br>
-	<button type="submit" id="register" name="submit">Register</button>
+
+
+<form class="login" action="/register/index.php" method="POST">
+	<input class="login" type="text" name="first_name" placeholder="First Name"> <br> <br>
+	<input class="login" type="text" name="last_name" placeholder="Last Name"> <br> <br>
+	<input class="login" type="text" name="username" placeholder="Username"> <br><br>
+	<input class="login" type="email" name="email" placeholder="Email"> <br><br>
+	<input class="login" type="password" name="password" placeholder="Password"> <br> <br>
+	<button class="login" type="submit" name="submit">Register</button>
 </form>
-</body>
-</html>
+
+
+<?php
+require_once($root . "/footer.php");
+?>

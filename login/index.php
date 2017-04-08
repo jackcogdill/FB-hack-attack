@@ -86,12 +86,14 @@ if (!empty($notice)) {
 }
 
 ?>
-<form method="post" action="/login/index.php">
-	<input type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
-	<input type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
+<form class="login" method="post" action="/login/index.php">
+	<input class="login" type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
+	<input class="login" type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
 
-	<button type="submit" id="loginbtn" name="submit">Login</button>
+	<button type="submit" class="login" name="submit">Login</button>
 </form>
-Not signed up? <a href="/register" id="register">Register</a>
+<div id="login-after">
+	Not signed up? <a href="/register" id="register">Register</a>
+</div>
 </body>
 </html>

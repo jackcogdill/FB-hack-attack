@@ -2,20 +2,12 @@
 
 $root = $_SERVER["DOCUMENT_ROOT"];
 require_once($root . "/secure.php");
+require_once($root . "/head_top.php");
 
-$name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
+require_once($root . "/head_bottom.php");
+require_once($root . "/header.php");
+
+require_once($root . "/footer.php");
 
 ?>
 
-<!DOCTYPE html>
-<html lang='en'>
-	<head>
-		<meta charset="utf-8">
-		<title>Test</title>
-		<link rel="stylesheet" href="/css/main.css">
-	</head>
-	<body>
-		<div>Welcome, <?php echo $name; ?>.</div>
-		<a href="/logout">Logout</a>
-	</body>
-</html>
