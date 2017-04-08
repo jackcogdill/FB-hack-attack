@@ -1,2 +1,2 @@
 <html><head>
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href=<?php echo $up . "css/main.css"; ?>>

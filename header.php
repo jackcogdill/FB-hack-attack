@@ -12,7 +12,7 @@ $pts  = $_SESSION['user']['points'];
 	<div>
 		<?php echo $pts . " points";?>
 	</div>
-	<a href="/logout">Logout</a>
+	<a href="logout">Logout</a>
 </div>
 
 <div id="wrap">

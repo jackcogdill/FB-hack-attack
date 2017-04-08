@@ -1,5 +1,6 @@
 <?php
 
+$up = "";
 // Connect to database and start session
 require_once("secure.php");
 
@@ -63,14 +64,14 @@ if (!empty($_POST['code'])) {
 
 require_once("head_top.php");
 ?>
-<link rel="stylesheet" type="text/css" href="/css/challenge.css">
+<link rel="stylesheet" type="text/css" href="css/challenge.css">
 <?php
 require_once("head_bottom.php");
 require_once("header.php");
 
 ?>
 
-<form id="challenge" action="/challenge/index.php" method="post">
+<form id="challenge" action="challenge/index.php" method="post">
 	<div id="challenge-info">
 		<?php echo $chall_info; ?>
 	</div>

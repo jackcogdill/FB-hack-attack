@@ -1,5 +1,6 @@
 <?php
 
+$up = "../";
 require_once("../db.php");
 
 $bad_notice = '';
@@ -20,7 +21,7 @@ if (isset($_POST['submit'])) {
 	$points     = mysqli_real_escape_string($connect, 0                      );
 
 	if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
-		header('Location: /register/index.php?blank');
+		header('Location: ../register/index.php?blank');
 		die("Redirecting");
 	}
 
@@ -35,7 +36,7 @@ if (isset($_POST['submit'])) {
 	$rows  = mysqli_num_rows($query);
 
 	if ($rows != 0) {
-		header('Location: /register/index.php?taken');
+		header('Location: ../register/index.php?taken');
 		die("Redirecting");
 	}
 
@@ -49,7 +50,7 @@ if (isset($_POST['submit'])) {
 		$stmt->close();
 
 		// Redirect the user
-		header("Location: /login?registered");
+		header("Location: ../login?registered");
 		die("Redirecting");
 	}
 }
@@ -67,7 +68,7 @@ if (!empty($bad_notice)) {
 }
 ?>
 
-<form class="login" action="/register/index.php" method="POST">
+<form class="login" action="../register/index.php" method="POST">
 	<input class="login" type="text" name="first_name" placeholder="First Name"> <br> <br>
 	<input class="login" type="text" name="last_name" placeholder="Last Name"> <br> <br>
 	<input class="login" type="text" name="username" placeholder="Username"> <br><br>

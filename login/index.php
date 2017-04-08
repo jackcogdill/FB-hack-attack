@@ -1,10 +1,11 @@
 <?php
 
+$up = "../";
 require_once("../db.php");
 
 if (!empty($_SESSION['user'])) {
 	// already logged in, redirect the user
-	header("Location: /");
+	header("Location: ../");
 	die("Redirecting");
 }
 
@@ -52,7 +53,7 @@ if (isset($_POST)) {
 
 		$_SESSION['user'] = $row;
 
-		header('Location: /');
+		header('Location: ../');
 		die("Redirecting");
 	}
 }
@@ -62,7 +63,7 @@ if (isset($_POST)) {
 <html>
 <head>
 	<title>Quiz</title>
-	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<style type="text/css">
 		input
 {
@@ -85,14 +86,14 @@ if (!empty($notice)) {
 }
 
 ?>
-<form class="login" method="post" action="/login/index.php">
+<form class="login" method="post" action="../login/index.php">
 	<input class="login" type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
 	<input class="login" type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
 
 	<button type="submit" class="login" name="submit">Login</button>
 </form>
 <div id="login-after">
-	Not signed up? <a href="/register" id="register">Register</a>
+	Not signed up? <a href="../register" id="register">Register</a>
 </div>
 </body>
 </html>
