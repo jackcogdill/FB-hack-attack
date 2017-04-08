@@ -1,11 +1,15 @@
-mysql -u root -p
-
 1. Setup database:
 ================================
 create database quiz;
 use quiz;
 
-2. Create user table:
+2. Give access permissions
+================================
+GRANT ALL PRIVILEGES ON quiz.*
+TO 'quizer'@'localhost'
+IDENTIFIED BY 'quizme';
+
+3. Create user table:
 ================================
 CREATE TABLE users (
 	id INT(11) NOT NULL AUTO_INCREMENT,
@@ -18,8 +22,32 @@ CREATE TABLE users (
 	PRIMARY KEY (id)
 );
 
-3. Give access permissions
+4. Create weighting list table:
 ================================
+CREATE TABLE waiting (
+	id INT(11) NOT NULL,
+	username VARCHAR(55) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+
+
+
+/——————————————————————————————\
+|          Copy Pasta          |
+\——————————————————————————————/
+create database quiz;
+use quiz;
 GRANT ALL PRIVILEGES ON quiz.*
 TO 'quizer'@'localhost'
 IDENTIFIED BY 'quizme';
+CREATE TABLE users (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	first_name VARCHAR(55) NOT NULL,
+	last_name VARCHAR(55) NOT NULL,
+	username VARCHAR(55) NOT NULL,
+	email VARCHAR(55) NOT NULL,
+	password VARCHAR(55) NOT NULL,
+	points INT(11),
+	PRIMARY KEY (id)
+);

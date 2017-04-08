@@ -48,3 +48,14 @@ input.login:-moz-placeholder {           color: #ccc; } /* Firefox 18- */
 .notice {
 	color: green;
 }
+
+.badnotice {
+	color: red;
+}
+
+.notice, .badnotice {
+	position: absolute;
+	display: block;
+	width: 100%;
+	margin: 0.5em 0 0 0.5em;
+}
