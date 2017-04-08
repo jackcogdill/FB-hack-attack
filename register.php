@@ -1,26 +1,25 @@
 <?php
+
 require_once("db.php");
-if(isset($_POST['submit']))
-{
+
+if (isset($_POST['submit'])) {
 	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']));
 	$last_name = mysqli_real_escape_string($connect, ($_POST['last_name']));
 	$username = mysqli_real_escape_string($connect, ($_POST['username']));
 	$email = mysqli_real_escape_string($connect, ($_POST['email']));
 	$password = mysqli_real_escape_string($connect, ($_POST['password']));
 	
-		$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password) VALUES(?, ?, ?, ?, ?)");
-		if(!$stmt)
-		{
-		
-		}
-		else
-		{
+	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password) VALUES(?, ?, ?, ?, ?)");
+
+	if(!$stmt) {}
+	else {
 		$stmt->bind_param("sssss", $first_name, $last_name, $username, $email, $password);
 		$stmt->execute();
 		$rows =  $stmt->affected_rows;
 		$stmt->close();
 	}
 }
+
 ?>
 <!DOCTYPE html>
 <html>
