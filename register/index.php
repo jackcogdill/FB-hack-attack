@@ -1,7 +1,6 @@
 <?php
 
-$root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/db.php");
+require_once("../db.php");
 
 if (isset($_POST['submit'])) {
 	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']) );
@@ -13,8 +12,7 @@ if (isset($_POST['submit'])) {
 
 	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password, points) VALUES(?, ?, ?, ?, ?, ?)");
 
-	if(!$stmt) {}
-	else {
+	if ($stmt) {
 		$stmt->bind_param("ssssss", $first_name, $last_name, $username, $email, $password, $points);
 		$stmt->execute();
 		$rows =  $stmt->affected_rows;
@@ -26,8 +24,8 @@ if (isset($_POST['submit'])) {
 	}
 }
 
-require_once($root . "/head_top.php");
-require_once($root . "/head_bottom.php");
+require_once("../head_top.php");
+require_once("../head_bottom.php");
 
 ?>
 
@@ -43,5 +41,5 @@ require_once($root . "/head_bottom.php");
 
 
 <?php
-require_once($root . "/footer.php");
+require_once("../footer.php");
 ?>

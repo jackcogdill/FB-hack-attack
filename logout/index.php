@@ -1,8 +1,7 @@
 <?php
 
 // Connect to database and start session
-$root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/secure.php");
+require_once("../secure.php");
 
 // Remove user data from session
 unset($_SESSION['user']);

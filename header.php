@@ -1,8 +1,7 @@
 <div id="header">
 <?php
 
-$root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/secure.php");
+require_once("secure.php");
 
 $name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
 $pts  = $_SESSION['user']['points'];

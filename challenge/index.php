@@ -1,8 +1,7 @@
 <?php
 
 // Connect to database and start session
-$root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/secure.php");
+require_once("../secure.php");
 
 $code = '';
 
@@ -38,12 +37,12 @@ if (!empty($_POST['code'])) {
 
 
 
-require_once($root . "/head_top.php");
+require_once("../head_top.php");
 ?>
 <link rel="stylesheet" type="text/css" href="/css/challenge.css">
 <?php
-require_once($root . "/head_bottom.php");
-require_once($root . "/header.php");
+require_once("../head_bottom.php");
+require_once("../header.php");
 
 ?>
 
@@ -64,6 +63,6 @@ echo 'value="'.$code.'"';
 
 <?php
 
-require_once($root . "/footer.php");
+require_once("../footer.php");
 
 ?>

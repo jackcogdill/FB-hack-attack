@@ -1,7 +1,6 @@
 <?php
 
-$root = $_SERVER["DOCUMENT_ROOT"];
-require_once($root . "/db.php");
+require_once("../db.php");
 
 if (!empty($_SESSION['user'])) {
 	// already logged in, redirect the user
