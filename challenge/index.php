@@ -112,11 +112,15 @@ input[type=submit]:hover {
 </head><body>
 
 <div id="wrap">
-	<form id="challenge" action="challenge.php" method="post">
+	<form id="challenge" action="/challenge" method="post">
 		<div id="challenge-info">
 			<?php echo $chall_info; ?>
 		</div>
-		<input type="text" id="code" name="code" autocomplete="off" <?php echo 'value="'.$code.'"'; ?>>
+		<input type="text" id="code" name="code" autocomplete="off"
+<?php
+echo 'value="'.$code.'"';
+?>
+		>
 		<input type="submit" id="submit" value="Submit">
 		<div id="answer">
 			<?php echo $answer; ?>
