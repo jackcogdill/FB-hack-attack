@@ -1,7 +1,7 @@
 <div id="header">
 <?php
 
-require_once("secure.php");
+require_once($up . "secure.php");
 
 $name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
 $pts  = $_SESSION['user']['points'];
