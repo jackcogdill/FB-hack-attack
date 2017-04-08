@@ -14,11 +14,14 @@ if (!empty($_POST['code'])) {
 	// Filter out any non-ascii characters (security measure)
 	preg_replace('/[^a-zA-Z0-9]/', '', $code);
 
-	$file = 'test.py';
+	$file = 'test.py'; // --------> Later change this to have session specific filename
 	file_put_contents($file, $code);
 
 	$out = `python $file`;
 	// echo $out;
+
+	// Delete $file
+	unlink($file);
 
 
 	$correct_str   = '<span class="correct">Correct! Get 1 point(s)</span>';
