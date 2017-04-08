@@ -10,6 +10,7 @@ $code = '';
 // (later, maybe retrieve from database)
 $chall_info = 'Write Python code to output the following string:<br>"Hello, World!"';
 $out_correct = 'Hello, World!';
+$answer = '';
 
 if (!empty($_POST['code'])) {
 	$code = $_POST['code'];
