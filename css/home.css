@@ -31,12 +31,6 @@
     margin-bottom: 1em;
 }
 
-hr.underline {
-    width: 60%;
-    left: 20%;
-    border-top: 1px solid #d3d3d3;
-}
-
 #button-wrap {
     list-style-type: none;
     -webkit-column-count: 3;

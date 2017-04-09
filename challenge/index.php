@@ -42,9 +42,11 @@ if ($match_flag) {
 					last_name2,
 					start_time,
 					is_correct1,
-					is_correct2
+					is_correct2,
+					points1,
+					points2
 				)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		");
 		if ($stmt) {
 			$user1 = $row['username'];
@@ -63,7 +65,7 @@ if ($match_flag) {
 			$hash_id = hash('sha512', $user1 . $user2 . $start_time);
 
 			$stmt->bind_param(
-				"sissssssiii",
+				"sissssssiiiii",
 				$hash_id,
 				$challenge_id,
 				$user1,
@@ -74,7 +76,9 @@ if ($match_flag) {
 				$_SESSION['user']['last_name'],
 				$start_time,
 				$default_correct,
-				$default_correct
+				$default_correct,
+				$row['points'],
+				$_SESSION['user']['points']
 			);
 			$stmt->execute();
 			$rows =  $stmt->affected_rows;
@@ -275,6 +279,7 @@ else if ($chall_flag) {
 		<?php echo $answer; ?>
 	</div>
 </form>
+<div id="opponent"></div>
 
 <script type="text/javascript">
 var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
@@ -292,6 +297,20 @@ $code = str_replace(array("\r","\n"),array("\\r","\\n"), $code);
 echo '"'.$code.'"';
 
 ?>);
+
+function opponent_refresh() {
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '../opponent.php', true);
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== '') {
+			document.getElementById('opponent').innerHTML = xhr.responseText;
+		}
+	}
+	xhr.send();
+}
+
+// Check every second
+window.setInterval(opponent_refresh, 1000);
 </script>
 
 <?php

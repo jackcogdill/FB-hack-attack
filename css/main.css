@@ -82,3 +82,23 @@ input.login:focus {
 	width: 100%;
 	margin: 0.5em 0 0 0.5em;
 }
+
+#opponent {
+	position: absolute;
+	display: block;
+	text-align: center;
+	width: 30%;
+	right: 2.5%;
+	top: 20%;
+}
+
+#opponent-title {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+hr.underline {
+	width: 60%;
+	left: 20%;
+	border-top: 1px solid #d3d3d3;
+}

@@ -118,6 +118,8 @@ CREATE TABLE ongoing (
 	is_correct2 TINYINT(1) NOT NULL,
 	end_time1 INT(11) NULL,
 	end_time2 INT(11) NULL,
+	points1 INT(11) NOT NULL,
+	points2 INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points) values (1, 'Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1);
