@@ -35,7 +35,13 @@ if (isset($_SESSION['user']['hash_id'])) {
 <form action="challenge/index.php" method="post">
 <ul id="button-wrap">
 	<li>Java<button type="submit" name="language" class="java" value="Java"></button></li>
-	<li>Python<button type="submit" name="language" class="python" value="Python"></button></li>
+	<li>Python&nbsp;
+<select id="difficulty" name="difficulty">
+	<option value="1">1</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+</select>
+<button type="submit" name="language" class="python" value="Python"></button></li>
 	<li>C<button type="submit" name="language" class="c" value="C"></button></li>
 	<li>Javascript<button type="submit" name="language" class="js" value="Javascript"></button></li>
 	<li>Ruby<button type="submit" name="language" class="ruby" value="Ruby"></button></li>

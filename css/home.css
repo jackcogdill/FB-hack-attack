@@ -69,3 +69,7 @@
     -moz-transition: opacity .40s ease-in-out;
     -webkit-transition: opacity .40s ease-in-out;
 }
+
+#difficulty {
+    position: absolute;
+}

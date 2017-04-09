@@ -13,6 +13,10 @@ $match_flag   = isset($_POST['language']); // Match up users instead of display 
 $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing challenge
 $waiting_flag = isset($_SESSION['user']['waiting']);
 
+if (isset($_POST['difficulty'])) {
+	$difficulty = $_POST['difficulty'];
+}
+
 if ($match_flag) {
 
 	$language = mysqli_real_escape_string($connect, $_POST['language']);
@@ -57,7 +61,7 @@ if ($match_flag) {
 
 			$start_time = time();
 
-			$challenge_id = 1; // Figure this out later!
+			$challenge_id = $difficulty;
 			$default_correct = 0;
 
 			$hash_id = hash('sha512', $user1 . $user2 . $start_time);
