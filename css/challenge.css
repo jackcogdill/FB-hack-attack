@@ -3,6 +3,10 @@
 	font-size: 1.5em;
 }
 
+#timer {
+	font-family: 'Consolas', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+}
+
 #challenge {
 	margin: 5% auto 0;
 	display: block;
