@@ -3,10 +3,6 @@
 	font-size: 1.5em;
 }
 
-#timer {
-	font-family: 'Consolas', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
-}
-
 #challenge {
 	margin: 5% 35% 0 auto;
 	display: block;
@@ -53,4 +49,34 @@ input[type=submit] {
 
 input[type=submit]:hover {
 	cursor: pointer;
+}
+
+#opponent {
+	position: absolute;
+	display: block;
+	text-align: center;
+	width: 30%;
+	right: 2.5%;
+	top: 20%;
+}
+
+#opponent-title {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+#timer {
+	color: red;
+	font-size: 2em;
+	padding: 0.4em 0;
+	border: 1px solid #FFA2A2;
+	-webkit-border-radius: 0.3em;
+	-moz-border-radius: 0.3em;
+	border-radius: 0.3em;
+	position: absolute;
+	display: block;
+	text-align: center;
+	width: 15%;
+	right: 10%;
+	top: 40%;
 }

@@ -280,12 +280,11 @@ else if ($chall_flag) {
 	</div>
 </form>
 <div id="opponent"></div>
-
-<p id="timer"></p>
+<div id="timer"></div>
 
 <script>
-var mins = 5;
-var ms = 5 * 60 * 1000;
+var mins = 1;
+var ms = mins * 60 * 1000;
 var countDownDate = new Date().getTime() + ms;
 
 var x = setInterval(function() {
@@ -297,7 +296,7 @@ var x = setInterval(function() {
 	var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 	var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-	document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+	document.getElementById("timer").innerHTML = minutes + ":" + seconds;
 
 	if (distance < 0) {
 		clearInterval(x);
