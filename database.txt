@@ -37,12 +37,13 @@ CREATE TABLE waiting (
 5. Create challenges table:
 ================================
 CREATE TABLE challenges (
-	id INT(11) NOT NULL AUTO_INCREMENT,
+	id INT(11) NOT NULL,
 	language VARCHAR(55) NOT NULL,
 	challenge_num INT(11) NOT NULL,
 	challenge_info VARCHAR(255) NOT NULL,
 	correct_out VARCHAR(255) NOT NULL,
 	points INT(11) NOT NULL,
+	minutes INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
 
@@ -58,10 +59,9 @@ CREATE TABLE ongoing (
 	first_name2 VARCHAR(55) NOT NULL,
 	last_name2 VARCHAR(55) NOT NULL,
 	start_time INT(11) NOT NULL,
-	is_correct1 TINYINT(1) NOT NULL,
-	is_correct2 TINYINT(1) NOT NULL,
-	end_time1 INT(11) NULL,
-	end_time2 INT(11) NULL,
+	winner VARCHAR(55),
+	points1 INT(11) NOT NULL,
+	points2 INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
 
