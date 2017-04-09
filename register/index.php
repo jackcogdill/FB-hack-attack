@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password, points) VALUES(?, ?, ?, ?, ?, ?)");
 
 	if ($stmt) {
-		$stmt->bind_param("ssssss", $first_name, $last_name, $username, $email, $password, $points);
+		$stmt->bind_param("sssssi", $first_name, $last_name, $username, $email, $password, $points);
 		$stmt->execute();
 		$rows =  $stmt->affected_rows;
 		$stmt->close();

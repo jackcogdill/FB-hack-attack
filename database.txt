@@ -25,8 +25,43 @@ CREATE TABLE users (
 4. Create weighting list table:
 ================================
 CREATE TABLE waiting (
-	id INT(11) NOT NULL,
+	id INT(11) NOT NULL AUTO_INCREMENT,
 	username VARCHAR(55) NOT NULL,
+	first_name VARCHAR(55) NOT NULL,
+	last_name VARCHAR(55) NOT NULL,
+	language VARCHAR(55) NOT NULL,
+	points INT(11),
+	PRIMARY KEY (id)
+);
+
+5. Create challenges table:
+================================
+CREATE TABLE challenges (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	language VARCHAR(55) NOT NULL,
+	challenge_num INT(11) NOT NULL,
+	challenge_info VARCHAR(255) NOT NULL,
+	correct_out VARCHAR(255) NOT NULL,
+	points INT(11) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+6. Create ongoing challenges table:
+==================================
+CREATE TABLE ongoing (
+	id VARCHAR(255) NOT NULL,
+	challenge_id INT(11) NOT NULL,
+	user1 VARCHAR(55) NOT NULL,
+	user2 VARCHAR(55) NOT NULL,
+	first_name1 VARCHAR(55) NOT NULL,
+	last_name1 VARCHAR(55) NOT NULL,
+	first_name2 VARCHAR(55) NOT NULL,
+	last_name2 VARCHAR(55) NOT NULL,
+	start_time INT(11) NOT NULL,
+	is_correct1 TINYINT(1) NOT NULL,
+	is_correct2 TINYINT(1) NOT NULL,
+	end_time1 INT(11) NULL,
+	end_time2 INT(11) NULL,
 	PRIMARY KEY (id)
 );
 
