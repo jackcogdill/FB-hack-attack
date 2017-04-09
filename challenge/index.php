@@ -284,23 +284,25 @@ else if ($chall_flag) {
 <p id="timer"></p>
 
 <script>
-	var countDownDate = new Date().getTime() + 300000;
+var mins = 5;
+var ms = 5 * 60 * 1000;
+var countDownDate = new Date().getTime() + ms;
 
-	var x = setInterval(function() {
+var x = setInterval(function() {
 
-		var now = new Date().getTime();
+	var now = new Date().getTime();
 
-		var distance = countDownDate - now;
+	var distance = countDownDate - now;
 
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+	var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+	var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-		document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+	document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
 
-		if (distance < 0) {
-	    	clearInterval(x);
-	    	document.getElementById("timer").innerHTML = "TIMES UP!";
-		}
+	if (distance < 0) {
+		clearInterval(x);
+		document.getElementById("timer").innerHTML = "TIMES UP!";
+	}
 }, 1000);
 </script>
 
