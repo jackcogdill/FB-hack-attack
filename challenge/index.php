@@ -297,6 +297,7 @@ var x = setInterval(function() {
 	var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 	document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+	document.getElementById("timer").style.opacity = 1;
 
 	if (distance < 0) {
 		clearInterval(x);

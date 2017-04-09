@@ -66,6 +66,7 @@ input[type=submit]:hover {
 }
 
 #timer {
+	opacity: 0;
 	color: red;
 	font-size: 2em;
 	padding: 0.4em 0;
