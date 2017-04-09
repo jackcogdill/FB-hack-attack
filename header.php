@@ -7,10 +7,7 @@ $name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
 $pts  = $_SESSION['user']['points'];
 ?>
 	<div>
-		<?php echo $name;?>
-	</div>
-	<div>
-		<?php echo $pts . " points";?>
+		<?php echo $name . ' | ' . $pts . " points";?>
 	</div>
 	<a href=<?php echo $up . "logout"; ?>>Logout</a>
 </div>

@@ -11,15 +11,18 @@ require_once("head_bottom.php");
 require_once("header.php");
 ?>
 
-<h3 class="center">Languages</h3>
+<p id="logo"> Hack Attack </p>
+<hr class="underline">
+<form action="challenge/index.php" method="post">
 <ul id="button-wrap">
-	<li><a class="java button" href="">Java</a></li>
-	<li><a class="python button" href="challenge">Python</a></li>
-	<li><a class="c button" href="">C</a></li>
-	<li><a class="js button" href="">Javascript</a></li>
-	<li><a class="ruby button" href="">Ruby</a></li>
-	<li><a class="php button" href="">PHP</a></li>
+	<li><button type="submit" name="language" class="java" value="Java">Java</button></li>
+	<li><button type="submit" name="language" class="python" value="Python">Python</button></li>
+	<li><button type="submit" name="language" class="c" value="C">C</button></li>
+	<li><button type="submit" name="language" class="js" value="Javascript">Javascript</button></li>
+	<li><button type="submit" name="language" class="ruby" value="Ruby">Ruby</button></li>
+	<li><button type="submit" name="language" class="php" value="PHP">PHP</button></li>
 </ul>
+</form>
 
 <?php
 require_once("footer.php");
