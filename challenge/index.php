@@ -281,6 +281,29 @@ else if ($chall_flag) {
 </form>
 <div id="opponent"></div>
 
+<p id="timer"></p>
+
+<script>
+	var countDownDate = new Date().getTime() + 300000;
+
+	var x = setInterval(function() {
+
+		var now = new Date().getTime();
+
+		var distance = countDownDate - now;
+
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+
+		if (distance < 0) {
+	    	clearInterval(x);
+	    	document.getElementById("timer").innerHTML = "TIMES UP!";
+		}
+}, 1000);
+</script>
+
 <script type="text/javascript">
 var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 	mode: 'python',
