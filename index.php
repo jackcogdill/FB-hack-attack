@@ -11,7 +11,7 @@ require_once("head_bottom.php");
 require_once("header.php");
 ?>
 
-<div class="center title">Languages</div>
+<p id="logo"> Hack Attack </p>
 <hr class="underline">
 <form action="challenge/index.php" method="post">
 <ul id="button-wrap">

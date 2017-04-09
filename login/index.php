@@ -58,23 +58,11 @@ if (isset($_POST)) {
 	}
 }
 
+require_once("../head_top.php");
+require_once("../head_bottom.php");
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Quiz</title>
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<style type="text/css">
-		input
-{
-	border: 0;
-	outline: 0;
-	background: transparent;
-	border-bottom: 2px #d3d3d3 solid;
-}
-	</style>
-</head>
-<body>
+<div id="wrap">
+<p id="logo"> Hack Attack </p>
 <?php
 
 if (!empty($notice)) {
@@ -95,5 +83,7 @@ if (!empty($notice)) {
 <div id="login-after">
 	Not signed up? <a href="../register" id="register">Register</a>
 </div>
-</body>
-</html>
+
+<?php
+require_once("../footer.php");
+?>
