@@ -41,12 +41,10 @@ if ($match_flag) {
 					first_name2,
 					last_name2,
 					start_time,
-					is_correct1,
-					is_correct2,
 					points1,
 					points2
 				)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		");
 		if ($stmt) {
 			$user1 = $row['username'];
@@ -65,7 +63,7 @@ if ($match_flag) {
 			$hash_id = hash('sha512', $user1 . $user2 . $start_time);
 
 			$stmt->bind_param(
-				"sissssssiiiii",
+				"sissssssiii",
 				$hash_id,
 				$challenge_id,
 				$user1,
@@ -75,8 +73,6 @@ if ($match_flag) {
 				$_SESSION['user']['first_name'],
 				$_SESSION['user']['last_name'],
 				$start_time,
-				$default_correct,
-				$default_correct,
 				$row['points'],
 				$_SESSION['user']['points']
 			);
@@ -96,7 +92,7 @@ if ($match_flag) {
 			die('Redirecting');
 		}
 		else {
-			// echo "Prepare failed: (" . $connect->errno . ") " . $connect->error;
+			echo "Prepare failed: (" . $connect->errno . ") " . $connect->error;
 		}
 	}
 	else { // If no one is waiting with your language, get added to waiting list
@@ -134,6 +130,20 @@ else if ($chall_flag) {
 	$query = mysqli_query($connect, $select);
 	$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
 
+	$start_time = $row['start_time'];
+	$winner = $row['winner'];
+
+	$opponent = NULL;
+	$user   = $_SESSION['user']['username'];
+	// Opponent is user2
+	if ($row['user1'] == $user) {
+		$opponent = $row['user2'];
+	}
+	// Opponent is user1
+	else {
+		$opponent = $row['user1'];
+	}
+
 
 	$challenge_id = $row['challenge_id'];
 	$chall_select = "
@@ -145,6 +155,7 @@ else if ($chall_flag) {
 	$chall_query = mysqli_query($connect, $chall_select);
 	$chall_row   = mysqli_fetch_array($chall_query, MYSQLI_ASSOC);
 
+	$minutes     = $chall_row['minutes'];
 	$chall_info  = $chall_row['challenge_info'];
 	$out_correct = $chall_row['correct_out'];
 
@@ -173,26 +184,42 @@ else if ($chall_flag) {
 		$answer = '';
 
 		if ($out === $out_correct) {
-			$answer = $correct_str;
+			if ($winner == NULL) {
+				$answer = $correct_str;
 
-			// Give 1 point to the user
-			$points = $_SESSION['user']['points'];
+				// Give 1 point to the user
+				$points = $_SESSION['user']['points'];
 
-			// Update session
-			$_SESSION['user']['points'] = $_SESSION['user']['points'] + 1;
+				// Update session
+				$_SESSION['user']['points'] = $_SESSION['user']['points'] + 1;
 
-			// Update database
-			$user   = $_SESSION['user']['username'];
-			$update = "
-				UPDATE users
-				SET points = points + 1
-				WHERE username = '{$user}'
-			";
+				// Update database
+				$user   = $_SESSION['user']['username'];
+				$update = "
+					UPDATE users
+					SET points = points + 1
+					WHERE username = '{$user}'
+				";
 
-			$query = mysqli_query($connect, $update);
+				$query = mysqli_query($connect, $update);
+
+
+				// Update database
+				$user   = $_SESSION['user']['username'];
+				$update = "
+					UPDATE ongoing
+					SET winner = '{$user}'
+					WHERE id = '{$id}'
+				";
+
+				$query = mysqli_query($connect, $update);
+			}
+			else if ($winner == $opponent) {
+				$answer = '<span class="correct">Sorry, you\'ve been beaten by your opponent.</span>';
+			}
 		}
 		else {
-			$answer = $incorrect_str;
+			$answer = '<span class="correct">'. $incorrect_str .'</span>';
 		}
 	}
 
@@ -283,9 +310,9 @@ else if ($chall_flag) {
 <div id="timer"></div>
 
 <script>
-var mins = 1;
+var mins = <?php echo $minutes; ?>;
 var ms = mins * 60 * 1000;
-var countDownDate = new Date().getTime() + ms;
+var countDownDate = (<?php echo $start_time; ?> * 1000) + ms;
 
 var x = setInterval(function() {
 
@@ -296,12 +323,17 @@ var x = setInterval(function() {
 	var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 	var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-	document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+	var str = "" + seconds;
+	var pad = "00";
+	var ans = pad.substring(0, pad.length - str.length) + str;
+	document.getElementById("timer").innerHTML = minutes + ":" + ans;
 	document.getElementById("timer").style.opacity = 1;
 
 	if (distance < 0) {
 		clearInterval(x);
-		document.getElementById("timer").innerHTML = "TIMES UP!";
+		document.getElementById("timer").innerHTML = "0:00";
+		alert('Returning to home page');
+		window.location = '../index.php';
 	}
 }, 1000);
 </script>

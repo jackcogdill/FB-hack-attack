@@ -102,6 +102,7 @@ CREATE TABLE challenges (
 	challenge_info VARCHAR(255) NOT NULL,
 	correct_out VARCHAR(255) NOT NULL,
 	points INT(11) NOT NULL,
+	minutes INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
 CREATE TABLE ongoing (
@@ -114,13 +115,10 @@ CREATE TABLE ongoing (
 	first_name2 VARCHAR(55) NOT NULL,
 	last_name2 VARCHAR(55) NOT NULL,
 	start_time INT(11) NOT NULL,
-	is_correct1 TINYINT(1) NOT NULL,
-	is_correct2 TINYINT(1) NOT NULL,
-	end_time1 INT(11) NULL,
-	end_time2 INT(11) NULL,
+	winner VARCHAR(55),
 	points1 INT(11) NOT NULL,
 	points2 INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points) values (1, 'Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1);
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points) values (2, 'Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (1, 'Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1, 1);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (2, 'Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5, 2);
