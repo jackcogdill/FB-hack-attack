@@ -86,3 +86,39 @@ CREATE TABLE users (
 	points INT(11),
 	PRIMARY KEY (id)
 );
+CREATE TABLE waiting (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	username VARCHAR(55) NOT NULL,
+	first_name VARCHAR(55) NOT NULL,
+	last_name VARCHAR(55) NOT NULL,
+	language VARCHAR(55) NOT NULL,
+	points INT(11),
+	PRIMARY KEY (id)
+);
+CREATE TABLE challenges (
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	language VARCHAR(55) NOT NULL,
+	challenge_num INT(11) NOT NULL,
+	challenge_info VARCHAR(255) NOT NULL,
+	correct_out VARCHAR(255) NOT NULL,
+	points INT(11) NOT NULL,
+	PRIMARY KEY (id)
+);
+CREATE TABLE ongoing (
+	id VARCHAR(255) NOT NULL,
+	challenge_id INT(11) NOT NULL,
+	user1 VARCHAR(55) NOT NULL,
+	user2 VARCHAR(55) NOT NULL,
+	first_name1 VARCHAR(55) NOT NULL,
+	last_name1 VARCHAR(55) NOT NULL,
+	first_name2 VARCHAR(55) NOT NULL,
+	last_name2 VARCHAR(55) NOT NULL,
+	start_time INT(11) NOT NULL,
+	is_correct1 TINYINT(1) NOT NULL,
+	is_correct2 TINYINT(1) NOT NULL,
+	end_time1 INT(11) NULL,
+	end_time2 INT(11) NULL,
+	PRIMARY KEY (id)
+);
+insert into challenges (language, challenge_num, challenge_info, correct_out, points) values ('Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1);
+insert into challenges (language, challenge_num, challenge_info, correct_out, points) values ('Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5);
