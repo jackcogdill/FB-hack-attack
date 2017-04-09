@@ -1,65 +1,71 @@
-#button-wrap {
-    list-style-type: none;
-    -webkit-column-count: 3;
-        -moz-column-count: 3;
-            column-count: 3;
-
-}
-
 .java {
     background: url('../images/java.png');
-    background-size: 200px 200px;
 }
 
 .python {
     background: url('../images/python.png');
-    background-size: 200px 200px;
 }
 
 .c {
     background: url('../images/c.png');
-    background-size: 200px 200px;
 }
 
 .js {
     background: url('../images/js.png');
-    background-size: 200px 200px;
 }
 
 .ruby {
     background: url('../images/ruby.png');
-    background-size: 200px 200px;
 }
 
 .php {
     background: url('../images/php.png');
-    background-size: 200px 200px;
 }
 
 .center {
     text-align: center;
 }
 
-.button {
-    -webkit-border-radius: 20px;
-       -moz-border-radius: 20px;
-            border-radius: 20px;
-    display: block;
-    height: 200px;
-    width: 200px;
-    text-align: center;
-    text-decoration: none;
-    margin-bottom: 10px;
-    margin-top: auto;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: "Monaco", "Andale Mono", "Courier New";
-    opacity: 0.2;
+.title {
+    font-size: 1.75em;
+    margin-bottom: 1em;
 }
 
-.button:hover {
+hr.underline {
+    width: 60%;
+    left: 20%;
+    border-top: 1px solid #acabab;
+}
+
+#button-wrap {
+    list-style-type: none;
+    -webkit-column-count: 3;
+        -moz-column-count: 3;
+            column-count: 3;
+    margin-top: 3em;
+}
+
+#button-wrap > li > button {
+    background-size: 12em 12em;
+
+    -webkit-border-radius: 15px;
+       -moz-border-radius: 15px;
+            border-radius: 15px;
+    display: block;
+    height: 12em;
+    width: 12em;
+    text-align: center;
+    text-decoration: none;
+    margin: auto;
+    margin-bottom: 3em;
+    font-size: 1em;
+    opacity: 0.2;
+    border: 1px solid #000;
+}
+
+#button-wrap > li > button:hover {
+    cursor: pointer;
     background-color: #FFFFFF;
-    text-decoration: underline;
     opacity: 1;
     transition: opacity .40s ease-in-out;
     -moz-transition: opacity .40s ease-in-out;

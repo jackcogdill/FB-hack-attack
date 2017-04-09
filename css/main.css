@@ -6,16 +6,24 @@ html, body {
 	font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', sans-serif;
 }
 
+a, a:visited {
+	color: #88d388;
+	text-decoration: underline;
+}
+
+a:active {
+	color: red;
+}
+
 #wrap {
 	margin: 0 auto;
 	display: block;
 }
 
 form.login {
-    margin: 15% auto;
-    width: 50%;
-    display: block;
-	/*background-color: #000;*/
+	margin: 15% auto;
+	width: 50%;
+	display: block;
 }
 
 button.login {
@@ -56,6 +64,12 @@ input.login:focus {
 
 .notice, .badnotice {
 	position: absolute;
+	display: block;
+	width: 100%;
+	margin: 0.5em 0 0 0.5em;
+}
+
+#header {
 	display: block;
 	width: 100%;
 	margin: 0.5em 0 0 0.5em;
