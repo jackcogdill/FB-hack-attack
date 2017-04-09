@@ -96,7 +96,7 @@ CREATE TABLE waiting (
 	PRIMARY KEY (id)
 );
 CREATE TABLE challenges (
-	id INT(11) NOT NULL AUTO_INCREMENT,
+	id INT(11) NOT NULL,
 	language VARCHAR(55) NOT NULL,
 	challenge_num INT(11) NOT NULL,
 	challenge_info VARCHAR(255) NOT NULL,
@@ -120,5 +120,5 @@ CREATE TABLE ongoing (
 	end_time2 INT(11) NULL,
 	PRIMARY KEY (id)
 );
-insert into challenges (language, challenge_num, challenge_info, correct_out, points) values ('Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1);
-insert into challenges (language, challenge_num, challenge_info, correct_out, points) values ('Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points) values (1, 'Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points) values (2, 'Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5);
