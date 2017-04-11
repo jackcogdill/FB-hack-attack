@@ -11,19 +11,19 @@ During our limited time, we created functionality only for Python.
 
 ## Screenshots
 
-![Image1](http://i.imgur.com/8L7nQOt.png)
+<kbd>![Image1](http://i.imgur.com/8L7nQOt.png)</kbd>
 
-![Image2](http://i.imgur.com/VF4zg0c.png)
+<kbd>![Image2](http://i.imgur.com/VF4zg0c.png)</kbd>
 
-![Image3](http://i.imgur.com/b2Mb8Rj.png)
+<kbd>![Image3](http://i.imgur.com/b2Mb8Rj.png)</kbd>
 
-![Image4](http://i.imgur.com/8TTrVDd.png)
+<kbd>![Image4](http://i.imgur.com/8TTrVDd.png)</kbd>
 
-![Image5](http://i.imgur.com/H9IFnR7.png)
+<kbd>![Image5](http://i.imgur.com/H9IFnR7.png)</kbd>
 
-![Image6](http://i.imgur.com/qFqQpOp.png)
+<kbd>![Image6](http://i.imgur.com/qFqQpOp.png)</kbd>
 
-![Image7](http://i.imgur.com/lKcTWOv.png)
+<kbd>![Image7](http://i.imgur.com/lKcTWOv.png)</kbd>
 
-![Image8](http://i.imgur.com/zaFPXWd.png)
+<kbd>![Image8](http://i.imgur.com/zaFPXWd.png)</kbd>
 
