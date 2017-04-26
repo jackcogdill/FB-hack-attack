@@ -4,8 +4,8 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
+$difficulty = 0;
 $code = '';
-
 $answer = '';
 
 
@@ -61,7 +61,21 @@ if ($match_flag) {
 
 			$start_time = time();
 
-			$challenge_id = $difficulty;
+			// Get challenge id
+			// =======================
+			$select = "
+				SELECT id
+				FROM challenges
+				WHERE
+					language = '{$language}' AND challenge_num = '{$difficulty}'
+				LIMIT 1
+			";
+			$query = mysqli_query($connect, $select);
+			$tmp_row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
+			$challenge_id = $tmp_row['id']; // Got challenge id
+			// End get challenge id
+			// =======================
+
 			$default_correct = 0;
 
 			$hash_id = hash('sha512', $user1 . $user2 . $start_time);
@@ -180,7 +194,6 @@ else if ($chall_flag) {
 		unlink($file);
 
 
-		$correct_str   = '<span class="correct">Correct! Get 1 point(s)</span>';
 		$incorrect_str = 'Sorry, try again';
 		// Compare user output with expected output
 		$out = trim($out);
@@ -189,34 +202,55 @@ else if ($chall_flag) {
 
 		if ($out === $out_correct) {
 			if ($winner == NULL) {
-				$answer = $correct_str;
+				// Give points to the user
+				// =============================
+				// Get challenge id
+				$id = $_SESSION['user']['hash_id'];
+				$select = "
+					SELECT challenge_id
+					FROM ongoing
+					WHERE id = '{$id}'
+					LIMIT 1
+				";
+				$query = mysqli_query($connect, $select);
+				$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
+				$challenge_id = $row['challenge_id']; // Got challenge id
 
-				// Give 1 point to the user
-				$points = $_SESSION['user']['points'];
+				// Get how many points challenge is worth
+				$select = "
+					SELECT points
+					FROM challenges
+					WHERE id = '{$challenge_id}'
+					LIMIT 1
+				";
+				$query = mysqli_query($connect, $select);
+				$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
+				$chall_points = $row['points'];
 
 				// Update session
-				$_SESSION['user']['points'] = $_SESSION['user']['points'] + 1;
+				$_SESSION['user']['points'] = $_SESSION['user']['points'] + $chall_points;
 
-				// Update database
+				// Update points in database
 				$user   = $_SESSION['user']['username'];
 				$update = "
 					UPDATE users
-					SET points = points + 1
+					SET points = points + '{$chall_points}'
 					WHERE username = '{$user}'
 				";
-
 				$query = mysqli_query($connect, $update);
 
 
-				// Update database
+				// Update database for winner
 				$user   = $_SESSION['user']['username'];
 				$update = "
 					UPDATE ongoing
 					SET winner = '{$user}'
 					WHERE id = '{$id}'
 				";
-
 				$query = mysqli_query($connect, $update);
+
+				// Update answer string with correct points
+				$answer = '<span class="correct">Correct! Get '. $chall_points .' point(s)</span>';
 			}
 			else if ($winner == $opponent) {
 				$answer = '<span class="correct">Sorry, you\'ve been beaten by your opponent.</span>';

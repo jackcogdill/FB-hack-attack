@@ -10,23 +10,35 @@ require_once("head_top.php");
 require_once("head_bottom.php");
 require_once("header.php");
 
-// Reset any matche
-if (isset($_SESSION['user']['hash_id'])) {
-	$id = $_SESSION['user']['hash_id'];
-	$select = "
-		DELETE FROM ongoing
-		WHERE id = '{$id}'
-		LIMIT 1
-	";
-	$query = mysqli_query($connect, $select);
+// Reset any matches
+// =====================
+// Ongoing
+$user = $_SESSION['user']['username'];
+$select = "
+	DELETE FROM ongoing
+	WHERE (
+		user1 = '{$user}' OR
+		user2 = '{$user}'
+	)
+";
+$query = mysqli_query($connect, $select);
 
-	if (isset($_SESSION['user']['hash_id'])) {
-		unset($_SESSION['user']['hash_id']);
-	}
-	if (isset($_SESSION['user']['waiting'])) {
-		unset($_SESSION['user']['waiting']);
-	}
+if (isset($_SESSION['user']['hash_id'])) {
+	unset($_SESSION['user']['hash_id']);
 }
+
+// Waiting
+$select = "
+	DELETE FROM waiting
+	WHERE username = '{$user}'
+";
+$query = mysqli_query($connect, $select);
+
+if (isset($_SESSION['user']['waiting'])) {
+	unset($_SESSION['user']['waiting']);
+}
+// End reset matches
+// =====================
 
 ?>
 
