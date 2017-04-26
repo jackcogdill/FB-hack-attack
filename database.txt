@@ -120,7 +120,7 @@ CREATE TABLE ongoing (
 	points2 INT(11) NOT NULL,
 	PRIMARY KEY (id)
 );
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (1, 'Python', 1, 'Write Python code to output the following string:<br>"Hello, World!"', 'Hello, World!', 1, 1);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (1, 'Python', 1, 'Output the following string:<br>"Hello, World!"', 'Hello, World!', 1, 1);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (2, 'Python', 2, 'Add up all the numbers from 1 to 100,000 containing the number 1337 within its digits; e.g., 11337.<br>Print the sum.', '597115', 5, 2);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (3, 'Python', 3, 'Find the largest number in the list: [31410, 13652, 93851, 51322, 21260, 98965, 70442, 92985, 6586, 86111, 9445, 6857, 71703, 80278, 18551, 92955, 52557, 63390, 94262, 30979, 53297, 16560, 33799, 21134, 89342, 41782, 17806, 71952, 2641, 75456]', '98965', 5, 1);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (4, 'Python', 4, 'What is the highest frequency color in: "orangeyelloworangeyellowpurpleyellowgreengreenyellowredyellowyellowbluepurpleorangeblueblueredbluepurplepurplegreenbluegreenpurpleblueredorangeorangepurplegreenyelloworangebluegreenblueorangeyellowyellowblueblue"', 'blue', 12, 5);

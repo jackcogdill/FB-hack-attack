@@ -1,6 +1,12 @@
+#language-info {
+	font-size: 1.4em;
+	text-decoration: underline;
+	color: #88d388;
+}
+
 #challenge-info {
 	margin-bottom: 1em;
-	font-size: 1.5em;
+	font-size: 1.2em;
 }
 
 #challenge {

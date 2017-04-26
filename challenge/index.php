@@ -173,9 +173,12 @@ else if ($chall_flag) {
 	$chall_query = mysqli_query($connect, $chall_select);
 	$chall_row   = mysqli_fetch_array($chall_query, MYSQLI_ASSOC);
 
+	$language    = $chall_row['language'];
 	$minutes     = $chall_row['minutes'];
 	$chall_info  = $chall_row['challenge_info'];
 	$out_correct = $chall_row['correct_out'];
+
+	$lang_info   = $language;
 
 	if (!empty($_POST['code'])) {
 		$code = $_POST['code'];
@@ -184,11 +187,18 @@ else if ($chall_flag) {
 		// Filter out any non-ascii characters (security measure)
 		preg_replace('/[^a-zA-Z0-9]/', '', $code);
 
-		$file = hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
-		file_put_contents($file, $code);
+		switch ($language) {
+			case 'Python':
+				$file = hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
+				file_put_contents($file, $code);
 
-		$out = `python $file`;
-		// echo $out;
+				$out = `python $file`;
+				break;
+			case 'Java':
+				break;
+			default:
+				break;
+		}
 
 		// Delete $file
 		unlink($file);
@@ -335,6 +345,9 @@ else if ($chall_flag) {
 ?>
 
 <form id="challenge" action="../challenge/index.php" method="post">
+	<div id="language-info">
+		<?php echo $lang_info; ?>
+	</div>
 	<div id="challenge-info">
 		<?php echo $chall_info; ?>
 	</div>
