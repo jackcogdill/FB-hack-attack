@@ -38,7 +38,7 @@ if (isset($_POST)) {
 			points
 		FROM users
 		WHERE
-			username = '{$user}' AND
+			(username = '{$user}' OR email = '{$user}') AND
 			password = '{$pass}'
 	";
 

@@ -5,8 +5,11 @@ require_once("../db.php");
 
 $bad_notice = '';
 
-if (isset($_GET['taken'])) {
+if (isset($_GET['utaken'])) {
 	$bad_notice = 'Username has already been taken';
+}
+else if (isset($_GET['etaken'])) {
+	$bad_notice = 'Email has already been taken';
 }
 else if (isset($_GET['blank'])) {
 	$bad_notice = 'Cannot leave fields blank';
@@ -36,7 +39,22 @@ if (isset($_POST['submit'])) {
 	$rows  = mysqli_num_rows($query);
 
 	if ($rows != 0) {
-		header('Location: ../register/index.php?taken');
+		header('Location: ../register/index.php?utaken');
+		die("Redirecting");
+	}
+
+	// Make sure email is unique
+	$select = "
+		SELECT email
+		FROM users
+		WHERE email = '{$email}'
+	";
+
+	$query = mysqli_query($connect, $select);
+	$rows  = mysqli_num_rows($query);
+
+	if ($rows != 0) {
+		header('Location: ../register/index.php?etaken');
 		die("Redirecting");
 	}
 
