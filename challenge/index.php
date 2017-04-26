@@ -190,6 +190,7 @@ else if ($chall_flag) {
 		$out = '';
 		switch ($language) {
 			case 'Python':
+				// Needs chmod 777 challenge
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
