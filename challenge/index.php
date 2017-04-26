@@ -193,7 +193,8 @@ else if ($chall_flag) {
 				$file = hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
-				$out = `python $file`;
+				$dir = basename(getcwd());
+				$out = `python $dir/$file`;
 				break;
 			case 'Java':
 				break;
