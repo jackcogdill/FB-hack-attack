@@ -187,17 +187,13 @@ else if ($chall_flag) {
 		// Filter out any non-ascii characters (security measure)
 		preg_replace('/[^a-zA-Z0-9]/', '', $code);
 
-		// ======================================
-		// Create user with no permissions:
-		// useradd -s /bin/false -r uscript
-		// ======================================
 		$out = '';
 		switch ($language) {
 			case 'Python':
 				$file = hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
-				$out = `su -c 'python $file' - uscript`;
+				$out = `python $file`;
 				break;
 			case 'Java':
 				break;
