@@ -190,11 +190,10 @@ else if ($chall_flag) {
 		$out = '';
 		switch ($language) {
 			case 'Python':
-				$file = hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
+				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
-				$dir = basename(getcwd());
-				$out = `python $dir/$file`;
+				$out = `python $file`;
 				break;
 			case 'Java':
 				break;
@@ -204,7 +203,6 @@ else if ($chall_flag) {
 
 		// Delete $file
 		unlink($file);
-
 
 		$incorrect_str = 'Sorry, try again';
 		// Compare user output with expected output
