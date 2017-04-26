@@ -5,7 +5,8 @@ $user = $_SESSION['user']['username'];
 $select = "
 	SELECT *
 	FROM ongoing
-	WHERE user1 = '{$user}'
+	WHERE
+		user1 = '{$user}' OR user2 = '{$user}'
 ";
 
 $query = mysqli_query($connect, $select);
