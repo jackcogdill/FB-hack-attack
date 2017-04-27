@@ -199,7 +199,13 @@ else if ($chall_flag) {
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
-				$out = `python '{$file}'`;
+				$dir = getcwd();
+				// Only allow user scripts to run specific time amount
+				// E.g., 0.5 seconds only
+				// After that, kill the process
+				// This is to protect against infinite loops that will crash the server
+				$cmd = 'python \''.$file.'\'';
+				$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
 
 				// Delete $file
 				unlink($file);
@@ -209,24 +215,23 @@ else if ($chall_flag) {
 				file_put_contents($file, $code);
 
 				$dir = getcwd();
-				$run = `javac -d  '{$dir}' '{$file}'`;
-				$out = `java {$java_class}`;
+				// Compile java code
+				$cmd = 'javac -d \''.$dir.'\' \''.$file.'\'';
+				$out = `python '{$dir}/run.py' 1.5 {$cmd}`;
+
+				// Run java code
+				$cmd = 'java ' . $java_class;
+				$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
 
 				// Delete files
 				unlink($file);
 				unlink(getcwd() . '/' . $java_class . '.class');
-
-				// $run = `javac '{$file}' 2>&1`;//<---------------------XXXXXXXXXXXXXXXX
-				// $out = `java {$java_class} 2>&1`;//<---------------------XXXXXXXXXXXXXXXX
-
-				// $out = $run . '<br>' . $out;//<---------------------XXXXXXXXXXXXXXXX
 				break;
 			default:
 				break;
 		}
 
 		$incorrect_str = 'Sorry, try again';
-		// $incorrect_str = $out;//<---------------------XXXXXXXXXXXXXXXX
 
 		// Compare user output with expected output
 		$out = trim($out);
