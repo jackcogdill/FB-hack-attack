@@ -182,7 +182,7 @@ else if ($chall_flag) {
 
 	if ($language == 'Java') {
 		$hash1 = hash('sha256', $_SESSION['user']['username'] . $challenge_id . $start_time);
-		$java_class = 'Ha' . hash('adler32', $hash1 . $hash1 . $hash1 . $hash1 . $hash1);
+		$java_class = 'Ha' . hash('adler32', $hash1);
 	}
 
 	if (!empty($_POST['code'])) {
