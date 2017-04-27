@@ -180,6 +180,11 @@ else if ($chall_flag) {
 
 	$lang_info   = $language;
 
+	if ($language == 'Java') {
+		$hash1 = hash('sha256', $_SESSION['user']['username'] . $challenge_id . $start_time);
+		$java_class = 'Ha' . hash('adler32', $hash1 . $hash1 . $hash1 . $hash1 . $hash1);
+	}
+
 	if (!empty($_POST['code'])) {
 		$code = $_POST['code'];
 		// echo $code;
@@ -194,18 +199,35 @@ else if ($chall_flag) {
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
 
-				$out = `python $file`;
+				$out = `python '{$file}'`;
+
+				// Delete $file
+				unlink($file);
 				break;
 			case 'Java':
+				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
+				file_put_contents($file, $code);
+
+				$dir = getcwd();
+				$run = `javac -d  '{$dir}' '{$file}'`;
+				$out = `java {$java_class}`;
+
+				// Delete files
+				unlink($file);
+				unlink(getcwd() . '/' . $java_class . '.class');
+
+				// $run = `javac '{$file}' 2>&1`;//<---------------------XXXXXXXXXXXXXXXX
+				// $out = `java {$java_class} 2>&1`;//<---------------------XXXXXXXXXXXXXXXX
+
+				// $out = $run . '<br>' . $out;//<---------------------XXXXXXXXXXXXXXXX
 				break;
 			default:
 				break;
 		}
 
-		// Delete $file
-		unlink($file);
-
 		$incorrect_str = 'Sorry, try again';
+		// $incorrect_str = $out;//<---------------------XXXXXXXXXXXXXXXX
+
 		// Compare user output with expected output
 		$out = trim($out);
 		$out_correct = trim($out_correct);
@@ -272,6 +294,13 @@ else if ($chall_flag) {
 		}
 	}
 
+	// Code was empty, but Java code so setup class
+	elseif ($language == 'Java') {
+		$code = 'class '.$java_class.' {
+
+}';
+	}
+
 }
 
 
@@ -288,6 +317,7 @@ if ($chall_flag) {
 <link rel="stylesheet" href="../codemirror/lib/codemirror.css">
 <link rel="stylesheet" type="text/css" href="../codemirror/theme/tomorrow-night-bright.css">
 <script src="../codemirror/mode/python/python.js"></script>
+<script src="../codemirror/mode/clike/clike.js"></script>
 
 <script type="text/javascript">
 function submit() {
@@ -392,7 +422,16 @@ var x = setInterval(function() {
 
 <script type="text/javascript">
 var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-	mode: 'python',
+	mode:<?php
+		switch($language) {
+			case 'Python':
+				echo "'python'";
+				break;
+			case 'Java':
+				echo "'text/x-java'";
+				break;
+		}
+	?>,
 	lineNumbers: true,
     styleActiveLine: true,
     theme: 'tomorrow-night-bright'

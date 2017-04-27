@@ -1,6 +1,10 @@
 <?php
 require_once('db.php');
 
+if (!isset($_SESSION['user']['hash_id'])) {
+	die();
+}
+
 $user = $_SESSION['user']['username'];
 $id   = $_SESSION['user']['hash_id'];
 $select = "
