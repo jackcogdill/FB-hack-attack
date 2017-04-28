@@ -27,7 +27,7 @@ During our limited time, we created functionality only for Python.
 	- [ ] Web security
 - [ ] Fix bugs
 	- [X] Timer broken for Java 1 on windows
-		- [ ] Test this on windows
+		- [X] Test this on windows
 	- [ ] Python challenge 4 overflow-x, but not Python 3?
 
 ## Screenshots
