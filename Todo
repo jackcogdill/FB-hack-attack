@@ -1,6 +1,6 @@
 - Switch to using sass when reskin site
+	- Change highlight colors
 
-- Add link to main page on challenge page
 - Redirect user if challenge is already ended
 	- Are you sure you want to leave the challenge?
 
