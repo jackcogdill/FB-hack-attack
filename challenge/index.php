@@ -7,6 +7,7 @@ require_once("../secure.php");
 $difficulty = 0;
 $code = '';
 $answer = '';
+$minutes = 1;
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
