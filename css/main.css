@@ -98,6 +98,11 @@ input.login:focus {
 	text-align: left;
 }
 
+#header .logo > div {
+	display: inline-block;
+	text-decoration: underline;
+}
+
 hr.underline {
 	width: 60%;
 	left: 20%;
