@@ -95,6 +95,7 @@ input.login:focus {
 #header .logo {
 	font-size: 1em;
 	line-height: 1.5em;
+	text-align: left;
 }
 
 hr.underline {

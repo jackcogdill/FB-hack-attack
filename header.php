@@ -9,7 +9,7 @@ $pts  = $_SESSION['user']['points'];
 /////////////////////////////////
 if (trim($up) !== '') {
 ?>
-	<a class="logo" href=<?php echo '"'. $up .'"'; ?>> Hack<br>Attack </a>
+	<a class="logo" href=<?php echo '"'. $up .'"'; ?>><p> Hack<br>Attack </p></a>
 <?php
 }
 /////////////////////////////////
