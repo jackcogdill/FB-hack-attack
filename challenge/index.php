@@ -303,7 +303,9 @@ else if ($chall_flag) {
 	// Code was empty, but Java code so setup class
 	elseif ($language == 'Java') {
 		$code = 'class '.$java_class.' {
+	public static void main(String[] args) {
 
+	}
 }';
 	}
 
