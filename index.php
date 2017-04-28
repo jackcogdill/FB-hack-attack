@@ -50,7 +50,8 @@ if (isset($_SESSION['user']['waiting'])) {
 		<select id="difficulty" name="difficulty">
 			<option value="1">1</option>
 		</select>
-<button type="submit" name="language" class="java" value="Java"></button></li>
+		<button type="submit" name="language" class="java" value="Java"></button>
+	</li>
 	<li>Python&nbsp;
 		<select id="difficulty" name="difficulty">
 			<option value="1">1</option>
@@ -58,11 +59,20 @@ if (isset($_SESSION['user']['waiting'])) {
 			<option value="3">3</option>
 			<option value="4">4</option>
 		</select>
-<button type="submit" name="language" class="python" value="Python"></button></li>
-	<li>C<button type="submit" name="language" class="c" value="C"></button></li>
-	<li>Javascript<button type="submit" name="language" class="js" value="Javascript"></button></li>
-	<li>Ruby<button type="submit" name="language" class="ruby" value="Ruby"></button></li>
-	<li>PHP<button type="submit" name="language" class="php" value="PHP"></button></li>
+		<button type="submit" name="language" class="python" value="Python"></button>
+	</li>
+	<li>Crypto&nbsp;
+		<select id="difficulty" name="difficulty">
+			<option value="1">1</option>
+		</select>
+		<button type="submit" name="language" class="crypto" value="Crypto"></button>
+	</li>
+	<li>CTF&nbsp;
+		<select id="difficulty" name="difficulty">
+			<option value="1">1</option>
+		</select>
+		<button type="submit" name="language" class="ctf" value="CTF"></button>
+	</li>
 </ul>
 </form>
 

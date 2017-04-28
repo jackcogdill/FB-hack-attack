@@ -1,75 +1,68 @@
 .java {
-    background: url('../images/java.png');
+	background: url('../images/java.png');
 }
 
 .python {
-    background: url('../images/python.png');
+	background: url('../images/python.png');
 }
 
-.c {
-    background: url('../images/c.png');
+.crypto {
+	background: #fff;
 }
 
-.js {
-    background: url('../images/js.png');
-}
-
-.ruby {
-    background: url('../images/ruby.png');
-}
-
-.php {
-    background: url('../images/php.png');
+.ctf {
+	background: #fff;
 }
 
 .center {
-    text-align: center;
+	text-align: center;
 }
 
 .title {
-    font-size: 1.75em;
-    margin-bottom: 1em;
+	font-size: 1.75em;
+	margin-bottom: 1em;
 }
 
 #button-wrap > li {
-    text-align: center;
+	text-align: center;
 }
 
 #button-wrap {
-    list-style-type: none;
-    -webkit-column-count: 3;
-        -moz-column-count: 3;
-            column-count: 3;
-    margin-top: 3em;
+	list-style-type: none;
+	-webkit-column-count: 2;
+	   -moz-column-count: 2;
+	        column-count: 2;
+	padding: 0 15%;
+	margin: 3em 0 auto;
 }
 
 #button-wrap > li > button {
-    background-size: 12em 12em;
+	background-size: 12em 12em;
 
-    -webkit-border-radius: 15px;
-       -moz-border-radius: 15px;
-            border-radius: 15px;
-    display: block;
-    height: 12em;
-    width: 12em;
-    text-align: center;
-    text-decoration: none;
-    margin: auto;
-    margin-bottom: 3em;
-    font-size: 1em;
-    opacity: 0.2;
-    border: 1px solid #000;
+	-webkit-border-radius: 15px;
+	   -moz-border-radius: 15px;
+	        border-radius: 15px;
+	display: block;
+	height: 12em;
+	width: 12em;
+	text-align: center;
+	text-decoration: none;
+	margin: auto;
+	margin-bottom: 3em;
+	font-size: 1em;
+	opacity: 0.2;
+	border: 1px solid #000;
 }
 
 #button-wrap > li > button:hover {
-    cursor: pointer;
-    background-color: #FFFFFF;
-    opacity: 1;
-    transition: opacity .40s ease-in-out;
-    -moz-transition: opacity .40s ease-in-out;
-    -webkit-transition: opacity .40s ease-in-out;
+	cursor: pointer;
+	background-color: #FFFFFF;
+	opacity: 1;
+	transition: opacity .40s ease-in-out;
+	-moz-transition: opacity .40s ease-in-out;
+	-webkit-transition: opacity .40s ease-in-out;
 }
 
 #difficulty {
-    position: absolute;
+	position: absolute;
 }
