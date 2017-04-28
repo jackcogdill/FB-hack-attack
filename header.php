@@ -5,11 +5,21 @@ require_once($up . "secure.php");
 
 $name = $_SESSION['user']['first_name'] . ' ' . $_SESSION['user']['last_name'];
 $pts  = $_SESSION['user']['points'];
+
+/////////////////////////////////
+if (trim($up) !== '') {
 ?>
-	<div>
-		<?php echo $name . ' | ' . $pts . " points";?>
+	<a class="logo" href=<?php echo '"'. $up .'"'; ?>> Hack<br>Attack </a>
+<?php
+}
+/////////////////////////////////
+?>
+	<div id="head-non-logo">
+		<div id="user-info">
+			<?php echo $name . ' | ' . $pts . " points";?>
+		</div>
+		<a href=<?php echo $up . "logout"; ?>>Logout</a>
 	</div>
-	<a href=<?php echo $up . "logout"; ?>>Logout</a>
 </div>
 
 <div id="wrap">

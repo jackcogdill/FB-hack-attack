@@ -77,7 +77,7 @@ require_once("../head_top.php");
 require_once("../head_bottom.php");
 ?>
 
-<p id="logo"> Hack Attack </p>
+<p class="logo"> Hack Attack </p>
 
 <?php
 if (!empty($bad_notice)) {

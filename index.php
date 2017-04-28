@@ -42,7 +42,7 @@ if (isset($_SESSION['user']['waiting'])) {
 
 ?>
 
-<p id="logo"> Hack Attack </p>
+<p class="logo"> Hack Attack </p>
 <hr class="underline">
 <form action="challenge/index.php" method="post">
 <ul id="button-wrap">

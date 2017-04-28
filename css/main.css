@@ -15,7 +15,7 @@ a:active {
 	color: red;
 }
 
-p#logo {
+.logo {
 	color: #88d388;
 	font-size: 3em;
 	font-family: 'Press Start 2P', cursive;
@@ -80,8 +80,21 @@ input.login:focus {
 #header {
 	position: absolute;
 	display: block;
-	width: 100%;
-	margin: 0.5em 0 0 0.5em;
+	width: 96%;
+	left: 2%; /* 100-96 = 4, 4/2 = 2 */
+	margin: 1em auto;
+}
+
+#header #head-non-logo {
+	position: absolute;
+	right: 0;
+	top: 0;
+	text-align: right;
+}
+
+#header .logo {
+	font-size: 1em;
+	line-height: 1.5em;
 }
 
 hr.underline {
