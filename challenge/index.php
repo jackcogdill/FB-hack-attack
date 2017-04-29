@@ -4,7 +4,7 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
-$difficulty = 0;
+$difficulty = 1;
 $code = '';
 $answer = '';
 $minutes = 1;
@@ -15,7 +15,11 @@ $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing chal
 $waiting_flag = isset($_SESSION['user']['waiting']);
 
 if (isset($_POST['difficulty'])) {
-	$difficulty = $_POST['difficulty'];
+	foreach($_POST['difficulty'] as $value) {
+		if (!empty($value)) {
+			$difficulty = $value;
+		}
+	}
 }
 
 if ($match_flag) {

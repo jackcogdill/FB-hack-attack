@@ -47,13 +47,15 @@ if (isset($_SESSION['user']['waiting'])) {
 <form action="challenge/index.php" method="post">
 <ul id="button-wrap">
 	<li>Java&nbsp;
-		<select id="difficulty" name="difficulty">
+		<select class="difficulty" name="difficulty[]">
+			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="java" value="Java"></button>
 	</li>
 	<li>Python&nbsp;
-		<select id="difficulty" name="difficulty">
+		<select class="difficulty" name="difficulty[]">
+			<option value="">Lvl</option>
 			<option value="1">1</option>
 			<option value="2">2</option>
 			<option value="3">3</option>
@@ -62,13 +64,15 @@ if (isset($_SESSION['user']['waiting'])) {
 		<button type="submit" name="language" class="python" value="Python"></button>
 	</li>
 	<li>Crypto&nbsp;
-		<select id="difficulty" name="difficulty">
+		<select class="difficulty" name="difficulty[]">
+			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="crypto" value="Crypto"></button>
 	</li>
 	<li>CTF&nbsp;
-		<select id="difficulty" name="difficulty">
+		<select class="difficulty" name="difficulty[]">
+			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="ctf" value="CTF"></button>
