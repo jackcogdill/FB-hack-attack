@@ -12,19 +12,21 @@ During our limited time, we created functionality only for Python.
 
 ## Todo
 - [X] Add link to main page on challenge page
+- [ ] Put src code in footer
 - [ ] Reskin site
 	- [ ] Switch to using sass
 	- [ ] Change highlight color
+	- [ ] Use SVGs
 - [ ] Redirect user if challenge is already ended
-	- [ ] Are you sure you want to leave the challenge?
+	- [ ] Are you sure you want to leave the challenge? (Forfeit)
 - [ ] User wins challenge-> redirect to win page (or popup)
 	- [ ] winner: immediately redirect saying win ?
 	- [ ] loser: redirect once timer runs out
 - [ ] Tournament functionality
 	- [ ] Enter username to pick opponent
 - [ ] Add more challenges
-	- [ ] Crypto
-	- [ ] Web security
+	- [ ] 6 Crypto
+	- [ ] 6 Web security
 - [ ] Fix bugs
 	- [X] Timer broken for Java 1 on windows
 		- [X] Test this on windows
