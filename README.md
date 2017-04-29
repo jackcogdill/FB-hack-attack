@@ -13,6 +13,8 @@ During our limited time, we created functionality only for Python.
 ## Todo
 - [X] Add link to main page on challenge page
 - [ ] Put src code in footer
+- [ ] Add javascript
+	- [ ] No lvl selected
 - [ ] Reskin site
 	- [ ] Switch to using sass
 	- [ ] Change highlight color
