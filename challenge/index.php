@@ -193,10 +193,13 @@ else if ($chall_flag) {
 	if (!empty($_POST['code'])) {
 		$code = $_POST['code'];
 
+		// Filter non-ascii characters
+		$code = iconv("UTF-8", "ASCII//IGNORE", $code);
+
 		$incorrect_str = 'Sorry, try again';
 
 		// Quick security measures
-		function sanitize_code($str) {
+		function safe_code($str) {
 			global $incorrect_str;
 			if (strlen($str) > 1000) {
 				$incorrect_str = 'Your code exceeded the maximum character limit';
@@ -215,7 +218,7 @@ else if ($chall_flag) {
 		$out = '';
 		switch ($language) {
 			case 'Python':
-				if (sanitize_code($code) === false) { break; }
+				if (safe_code($code) === false) { break; }
 
 				// Needs chmod 777 challenge
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
@@ -233,7 +236,7 @@ else if ($chall_flag) {
 				unlink($file);
 				break;
 			case 'Java':
-				if (sanitize_code($code) === false) { break; }
+				if (safe_code($code) === false) { break; }
 
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
 				file_put_contents($file, $code);
