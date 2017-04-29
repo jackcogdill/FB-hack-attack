@@ -192,14 +192,31 @@ else if ($chall_flag) {
 
 	if (!empty($_POST['code'])) {
 		$code = $_POST['code'];
-		// echo $code;
 
-		// Filter out any non-ascii characters (security measure)
-		preg_replace('/[^a-zA-Z0-9]/', '', $code);
+		$incorrect_str = 'Sorry, try again';
+
+		// Quick security measures
+		function sanitize_code($str) {
+			global $incorrect_str;
+			if (strlen($str) > 1000) {
+				$incorrect_str = 'Your code exceeded the maximum character limit';
+				return false;
+			}
+
+			$pos = strrpos(strtolower($str), 'import');
+			if ($pos !== false) {
+				$incorrect_str = 'You may not use import';
+				return false;
+			}
+
+			return true;
+		}
 
 		$out = '';
 		switch ($language) {
 			case 'Python':
+				if (sanitize_code($code) === false) { break; }
+
 				// Needs chmod 777 challenge
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
 				file_put_contents($file, $code);
@@ -216,6 +233,8 @@ else if ($chall_flag) {
 				unlink($file);
 				break;
 			case 'Java':
+				if (sanitize_code($code) === false) { break; }
+
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
 				file_put_contents($file, $code);
 
@@ -235,8 +254,6 @@ else if ($chall_flag) {
 			default:
 				break;
 		}
-
-		$incorrect_str = 'Sorry, try again';
 
 		// Compare user output with expected output
 		$out = trim($out);
