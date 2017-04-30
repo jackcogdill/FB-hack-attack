@@ -31,7 +31,7 @@ During our limited time, we created functionality only for Python.
 	- [ ] 6 Crypto
 	- [ ] 6 Web security
 - [ ] Security
-	- [ ] Prevent SQL vulns
+	- [X] Prevent SQL vulns
 	- [ ] Hash passwords
 - [ ] Fix bugs
 	- [X] Timer broken for Java 1 on windows
