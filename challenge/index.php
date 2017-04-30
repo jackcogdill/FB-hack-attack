@@ -14,7 +14,7 @@ $language = '';
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
 $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing challenge
-$waiting_flag = isset($_SESSION['user']['waiting']);
+$waiting_flag = isset($_SESSION['user']['waiting']); // Currently waiting
 
 if (isset($_POST['difficulty'])) {
 	foreach($_POST['difficulty'] as $value) {
@@ -221,11 +221,18 @@ if ($match_flag) {
 				$ongo_stmt->close();
 
 				// Delete user1 from waiting list
-				$delete = "
+				$del_stmt = $connect->prepare('
 					DELETE FROM waiting
-					WHERE username = '{$user1}'
-				";
-				$query = mysqli_query($connect, $delete);
+					WHERE username = ?
+				');
+				if ($del_stmt) {
+					$del_stmt->bind_param(
+						"s",
+						$user1
+					);
+					$del_stmt->execute();
+					$del_stmt->close();
+				}
 
 				$_SESSION['user']['hash_id'] = $hash_id;
 				header('Location: index.php');
@@ -237,47 +244,66 @@ if ($match_flag) {
 	}
 }
 else if ($chall_flag) {
+	$lang_info = $language;
+
 	$id = $_SESSION['user']['hash_id'];
-	$select = "
+	$sel_stmt = $connect->prepare('
 		SELECT *
 		FROM ongoing
-		WHERE id = '{$id}'
+		WHERE id = ?
 		LIMIT 1
-	";
-	$query = mysqli_query($connect, $select);
-	$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
+	');
+	if ($sel_stmt) {
+		$sel_stmt->bind_param(
+			"s",
+			$id
+		);
+		$sel_stmt->execute();
 
-	$start_time = $row['start_time'];
-	$winner = $row['winner'];
-
-	$opponent = NULL;
-	$user   = $_SESSION['user']['username'];
-	// Opponent is user2
-	if ($row['user1'] == $user) {
-		$opponent = $row['user2'];
-	}
-	// Opponent is user1
-	else {
-		$opponent = $row['user1'];
-	}
+		$result = $sel_stmt->get_result();
+		if ($result->num_rows === 1) {
+			$row = $result->fetch_assoc(); // Get row
 
 
-	$challenge_id = $row['challenge_id'];
-	$chall_select = "
-		SELECT *
-		FROM challenges
-		WHERE id = '{$challenge_id}'
-		LIMIT 1
-	";
-	$chall_query = mysqli_query($connect, $chall_select);
-	$chall_row   = mysqli_fetch_array($chall_query, MYSQLI_ASSOC);
+			$start_time = $row['start_time'];
+			$winner = $row['winner'];
 
-	$language    = $chall_row['language'];
-	$minutes     = $chall_row['minutes'];
-	$chall_info  = $chall_row['challenge_info'];
-	$out_correct = $chall_row['correct_out'];
+			$opponent = NULL;
+			$user   = $_SESSION['user']['username'];
+			// Opponent is user2
+			if ($row['user1'] == $user) {
+				$opponent = $row['user2'];
+			}
+			// Opponent is user1
+			else {
+				$opponent = $row['user1'];
+			}
 
-	$lang_info   = $language;
+			$challenge_id = $row['challenge_id'];
+
+
+			$chall_stmt = $connect->prepare('
+				SELECT *
+				FROM challenges
+				WHERE id = ?
+				LIMIT 1
+			');
+			if ($chall_stmt) {
+				$chall_stmt->bind_param(
+					"s",
+					$challenge_id
+				);
+				$chall_stmt->execute();
+
+				$chall_result = $chall_stmt->get_result();
+				if ($chall_result->num_rows === 1) {
+					$chall_row = $chall_result->fetch_assoc(); // Get row
+
+					$language    = $chall_row['language'];
+					$minutes     = $chall_row['minutes'];
+					$chall_info  = $chall_row['challenge_info'];
+					$out_correct = $chall_row['correct_out'];
+
 
 	if ($language == 'Java') {
 		$hash1 = hash('sha256', $_SESSION['user']['username'] . $challenge_id . $start_time);
@@ -361,50 +387,42 @@ else if ($chall_flag) {
 			if ($winner == NULL) {
 				// Give points to the user
 				// =============================
-				// Get challenge id
-				$id = $_SESSION['user']['hash_id'];
-				$select = "
-					SELECT challenge_id
-					FROM ongoing
-					WHERE id = '{$id}'
-					LIMIT 1
-				";
-				$query = mysqli_query($connect, $select);
-				$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
-				$challenge_id = $row['challenge_id']; // Got challenge id
-
-				// Get how many points challenge is worth
-				$select = "
-					SELECT points
-					FROM challenges
-					WHERE id = '{$challenge_id}'
-					LIMIT 1
-				";
-				$query = mysqli_query($connect, $select);
-				$row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
-				$chall_points = $row['points'];
+				$chall_points = $chall_row['points'];
 
 				// Update session
 				$_SESSION['user']['points'] = $_SESSION['user']['points'] + $chall_points;
 
 				// Update points in database
-				$user   = $_SESSION['user']['username'];
-				$update = "
+				$pnt_stmt = $connect->prepare('
 					UPDATE users
-					SET points = points + '{$chall_points}'
-					WHERE username = '{$user}'
-				";
-				$query = mysqli_query($connect, $update);
-
+					SET points = points + ?
+					WHERE username = ?
+				');
+				if ($pnt_stmt) {
+					$pnt_stmt->bind_param(
+						"is",
+						$chall_points,
+						$user
+					);
+					$pnt_stmt->execute();
+					$pnt_stmt->close();
+				}
 
 				// Update database for winner
-				$user   = $_SESSION['user']['username'];
-				$update = "
+				$win_stmt = $connect->prepare('
 					UPDATE ongoing
-					SET winner = '{$user}'
-					WHERE id = '{$id}'
-				";
-				$query = mysqli_query($connect, $update);
+					SET winner = ?
+					WHERE id = ?
+				');
+				if ($win_stmt) {
+					$win_stmt->bind_param(
+						"ss",
+						$user,
+						$id
+					);
+					$win_stmt->execute();
+					$win_stmt->close();
+				}
 
 				// Update answer string with correct points
 				$answer = '<span class="correct">Correct! Get '. $chall_points .' point(s)</span>';
@@ -427,6 +445,15 @@ else if ($chall_flag) {
 }';
 	}
 
+
+				}
+
+				$chall_stmt->close();
+			}
+		}
+
+		$sel_stmt->close();
+	}
 }
 
 

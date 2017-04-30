@@ -14,26 +14,43 @@ require_once("header.php");
 // =====================
 // Ongoing
 $user = $_SESSION['user']['username'];
-$select = "
+$delo_stmt = $connect->prepare('
 	DELETE FROM ongoing
 	WHERE (
-		user1 = '{$user}' OR
-		user2 = '{$user}'
+		user1 = ? OR
+		user2 = ?
 	)
-";
-$query = mysqli_query($connect, $select);
+');
+if ($delo_stmt) {
+	$delo_stmt->bind_param(
+		"ss",
+		$user,
+		$user
+	);
+	$delo_stmt->execute();
+	$delo_stmt->close();
+}
 
+// Delete hash id
 if (isset($_SESSION['user']['hash_id'])) {
 	unset($_SESSION['user']['hash_id']);
 }
 
 // Waiting
-$select = "
+$delw_stmt = $connect->prepare('
 	DELETE FROM waiting
-	WHERE username = '{$user}'
-";
-$query = mysqli_query($connect, $select);
+	WHERE username = ?
+');
+if ($delw_stmt) {
+	$delw_stmt->bind_param(
+		"s",
+		$user
+	);
+	$delw_stmt->execute();
+	$delw_stmt->close();
+}
 
+// Delete from waiting
 if (isset($_SESSION['user']['waiting'])) {
 	unset($_SESSION['user']['waiting']);
 }
