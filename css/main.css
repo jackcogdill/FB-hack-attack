@@ -73,6 +73,8 @@ input:focus {
 .notice, .badnotice {
 	position: absolute;
 	display: block;
+	width: inherit;
+	text-align: center;
 	margin-top: -2.5em;
 }
 
