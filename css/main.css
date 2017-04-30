@@ -22,7 +22,7 @@ a:active {
 	text-align: center;
 
 	/* Default <p> values */
-    display: block;
+    display: inline-block;
     margin: 1em 0;
     text-decoration: none;
 }
