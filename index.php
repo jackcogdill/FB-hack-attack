@@ -40,6 +40,17 @@ if (isset($_SESSION['user']['waiting'])) {
 // End reset matches
 // =====================
 
+$bad_notice = '';
+if (isset($_GET['osu'])) {
+	$bad_notice = 'You cannot challenge yourself.';
+}
+else if (isset($_GET['udne'])) {
+	$bad_notice = 'The user you challenged does not exist.';
+}
+else if (isset($_GET['nod'])) {
+	$bad_notice = 'Please select a difficulty.';
+}
+
 ?>
 
 <p class="logo"> Hack Attack </p>
@@ -65,8 +76,17 @@ if (isset($_SESSION['user']['waiting'])) {
 	</div>
 	<div id="choose-opponent">
 		<div>
+<?php
+if (!empty($bad_notice)) {
+?>
+<div class="badnotice">
+<?php echo $bad_notice; ?>
+</div>
+<?php
+}
+?>
 			Opponent's username:
-			<input type="text" name="specific-opponent" placeholder="Random">
+			<input type="text" name="specific-opponent" placeholder="Random" onkeydown="if (event.keyCode == 13) return false;">
 		</div>
 	</div>
 	<div>Crypto&nbsp;

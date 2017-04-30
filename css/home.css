@@ -43,6 +43,7 @@
 }
 
 #button-wrap {
+	min-width: 40em;
 	list-style-type: none;
 	-webkit-column-count: 3;
 	   -moz-column-count: 3;

@@ -93,6 +93,7 @@ CREATE TABLE waiting (
 	last_name VARCHAR(55) NOT NULL,
 	language VARCHAR(55) NOT NULL,
 	points INT(11),
+	opponent VARCHAR(55),
 	PRIMARY KEY (id)
 );
 CREATE TABLE challenges (
