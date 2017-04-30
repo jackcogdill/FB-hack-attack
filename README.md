@@ -18,8 +18,11 @@ During our limited time, we created functionality only for Python.
 	- [ ] Switch to using sass
 	- [ ] Change highlight color
 	- [ ] Use SVGs
+- [ ] Email activation
+- [ ] login not login/index.php
 - [ ] Redirect user if challenge is already ended
 	- [ ] Are you sure you want to leave the challenge? (Forfeit)
+	- [ ] Disconnect while waiting: silently remove from database
 - [ ] User wins challenge-> redirect to win page (or popup)
 	- [ ] winner: immediately redirect saying win ?
 	- [ ] loser: redirect once timer runs out
