@@ -4,10 +4,12 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
-$difficulty = 1;
+$difficulty = 0;
 $code = '';
 $answer = '';
 $minutes = 1;
+$want_opponent = '';
+$language = '';
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
@@ -20,126 +22,218 @@ if (isset($_POST['difficulty'])) {
 			$difficulty = $value;
 		}
 	}
+	if ($difficulty === 0) {
+		header('Location: ../index.php?nod');
+		die("Redirecting");
+	}
 }
 
 if ($match_flag) {
+	// Language
+	$language = $_POST['language'];
 
-	$language = mysqli_real_escape_string($connect, $_POST['language']);
-	$select = "
-		SELECT *
-		FROM waiting
-		WHERE language = '{$language}'
-		LIMIT 1
-	";
-	$query = mysqli_query($connect, $select);
-	$rows  = mysqli_num_rows($query);
-	// If someone is waiting with your language, both get added to ongoing challenges
-	// (that person is deleted from waiting)
-	if ($rows > 0) {
-		$row = mysqli_fetch_array($query, MYSQLI_ASSOC);
+	// Try to match with this opponent (wait for them to join you)
+	$want_opponent = trim($_POST['specific-opponent']);
 
-		$stmt = $connect->prepare("
-			INSERT INTO ongoing
-				(
-					id,
-					challenge_id,
-					user1,
-					user2,
-					first_name1,
-					last_name1,
-					first_name2,
-					last_name2,
-					start_time,
-					points1,
-					points2
-				)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		");
-		if ($stmt) {
-			$user1 = $row['username'];
-			$user2 = $_SESSION['user']['username'];
+	// Cannot challenge yourself
+	if ($want_opponent === $_SESSION['user']['username']) {
+		header('Location: ../index.php?osu');
+		die("Redirecting");
+	}
 
-			if ($user1 == $user2) {
+	$query = '';
+	// Looking for specific opponent
+	if (!empty($want_opponent)) {
+		// Make sure user exists
+		////////////////////////
+		$ue_stmt = $connect->prepare('
+			SELECT username
+			FROM users
+			WHERE username = ?
+		');
+		if ($ue_stmt) {
+			$ue_stmt->bind_param(
+				"s",
+				$want_opponent
+			);
+			$ue_stmt->execute();
+
+			$result = $ue_stmt->get_result();
+			if ($result->num_rows === 0) {
+				header('Location: ../index.php?udne');
+				die("Redirecting");
+			}
+
+			$ue_stmt->close();
+		}
+		////////////////////////
+
+		$query = '
+			SELECT *
+			FROM waiting
+			WHERE username = ? AND opponent = ?
+			LIMIT 1
+		';
+	}
+	// Random
+	else {
+		$query = '
+			SELECT *
+			FROM waiting
+			WHERE language = ?
+			LIMIT 1
+		';
+	}
+
+	// Prepare
+	$stmt = $connect->prepare($query);
+	if ($stmt) {
+		// Bind parameters
+		// =======================
+		// Looking for specific opponent
+		// and opponent is looking specifically for you
+		if (!empty($want_opponent)) {
+			$stmt->bind_param(
+				"ss",
+				$want_opponent,
+				$_SESSION['user']['username']
+			);
+		}
+		// Random
+		else {
+			$stmt->bind_param(
+				"s",
+				$language
+			);
+		}
+
+		$stmt->execute();
+
+		// Get number of rows
+		$result = $stmt->get_result();
+
+		// If no one is waiting with your language,
+		// or your opponent is not waiting:
+		// get added to waiting list
+		if ($result->num_rows === 0) {
+			$wait_stmt = $connect->prepare('
+				INSERT INTO waiting
+					(username, first_name, last_name, language, points, opponent)
+				VALUES (?, ?, ?, ?, ?, ?)
+			');
+			if ($wait_stmt) {
+				$wait_stmt->bind_param(
+					"ssssis",
+					$_SESSION['user']['username'],
+					$_SESSION['user']['first_name'],
+					$_SESSION['user']['last_name'],
+					$language,
+					$_SESSION['user']['points'],
+					$want_opponent
+				);
+				$wait_stmt->execute();
+				$wait_stmt->close();
+			}
+
+			$_SESSION['user']['waiting'] = 1;
+			$waiting_flag = 1;
+		}
+		// Get matched with opponent:
+		// both users get added to ongoing challenges
+		// (waiting person is deleted from waiting)
+		elseif ($result->num_rows === 1) {
+			$row = $result->fetch_assoc(); // Get row
+
+			$ongo_stmt = $connect->prepare('
+				INSERT INTO ongoing
+					(
+						id,
+						challenge_id,
+						user1,
+						user2,
+						first_name1,
+						last_name1,
+						first_name2,
+						last_name2,
+						start_time,
+						points1,
+						points2
+					)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			');
+			if ($ongo_stmt) {
+				$user1 = $row['username'];
+				$user2 = $_SESSION['user']['username'];
+
+				if ($user1 == $user2) {
+					header('Location: ../index.php?osu');
+					die('Redirecting');
+				}
+
+				$start_time = time();
+
+				// Get challenge id
+				// =======================
+				$challenge_id = 0;
+				$ci_stmt = $connect->prepare('
+					SELECT id
+					FROM challenges
+					WHERE
+						language = ? AND challenge_num = ?
+					LIMIT 1
+				');
+				if ($ci_stmt) {
+					$ci_stmt->bind_param(
+						"si",
+						$language,
+						$difficulty
+					);
+					$ci_stmt->execute();
+
+					$ci_result = $ci_stmt->get_result();
+					if ($ci_result->num_rows === 1) {
+						$ci_row = $ci_result->fetch_assoc();
+						$challenge_id = $ci_row['id']; // Got challenge id
+					}
+
+					$ci_stmt->close();
+				}
+				// End get challenge id
+				// =======================
+
+				$hash_id = hash('sha512', $user1 . $user2 . $start_time);
+
+				$ongo_stmt->bind_param(
+					"sissssssiii",
+					$hash_id,
+					$challenge_id,
+					$user1,
+					$user2,
+					$row['first_name'],
+					$row['last_name'],
+					$_SESSION['user']['first_name'],
+					$_SESSION['user']['last_name'],
+					$start_time,
+					$row['points'],
+					$_SESSION['user']['points']
+				);
+				$ongo_stmt->execute();
+				$ongo_stmt->close();
+
+				// Delete user1 from waiting list
+				$delete = "
+					DELETE FROM waiting
+					WHERE username = '{$user1}'
+				";
+				$query = mysqli_query($connect, $delete);
+
+				$_SESSION['user']['hash_id'] = $hash_id;
 				header('Location: index.php');
 				die('Redirecting');
 			}
-
-			$start_time = time();
-
-			// Get challenge id
-			// =======================
-			$select = "
-				SELECT id
-				FROM challenges
-				WHERE
-					language = '{$language}' AND challenge_num = '{$difficulty}'
-				LIMIT 1
-			";
-			$query = mysqli_query($connect, $select);
-			$tmp_row   = mysqli_fetch_array($query, MYSQLI_ASSOC);
-			$challenge_id = $tmp_row['id']; // Got challenge id
-			// End get challenge id
-			// =======================
-
-			$default_correct = 0;
-
-			$hash_id = hash('sha512', $user1 . $user2 . $start_time);
-
-			$stmt->bind_param(
-				"sissssssiii",
-				$hash_id,
-				$challenge_id,
-				$user1,
-				$user2,
-				$row['first_name'],
-				$row['last_name'],
-				$_SESSION['user']['first_name'],
-				$_SESSION['user']['last_name'],
-				$start_time,
-				$row['points'],
-				$_SESSION['user']['points']
-			);
-			$stmt->execute();
-			$rows =  $stmt->affected_rows;
-			$stmt->close();
-
-			// Delete user1 from waiting list
-			$delete = "
-				DELETE FROM waiting
-				WHERE username = '{$user1}'
-			";
-			$query = mysqli_query($connect, $delete);
-
-			$_SESSION['user']['hash_id'] = $hash_id;
-			header('Location: index.php');
-			die('Redirecting');
-		}
-		else {
-			echo "Prepare failed: (" . $connect->errno . ") " . $connect->error;
-		}
-	}
-	else { // If no one is waiting with your language, get added to waiting list
-		$stmt = $connect->prepare("
-			INSERT INTO waiting
-				(username, first_name, last_name, language, points)
-			VALUES (?, ?, ?, ?, ?)
-		");
-		if ($stmt) {
-			$stmt->bind_param(
-				"ssssi",
-				$_SESSION['user']['username'],
-				$_SESSION['user']['first_name'],
-				$_SESSION['user']['last_name'],
-				$language,
-				$_SESSION['user']['points']
-			);
-			$stmt->execute();
-			$rows =  $stmt->affected_rows;
-			$stmt->close();
 		}
 
-		$_SESSION['user']['waiting'] = 1;
-		$waiting_flag = 1;
+		$stmt->close();
 	}
 }
 else if ($chall_flag) {
@@ -383,7 +477,16 @@ div.desc {
 </style>
 
 <img src='../images/loading.gif' class='loading'/>
-<div class='desc'>Please wait while we match you with another coder.</div>
+<div class='desc'>
+<?php
+if (!empty($want_opponent)) {
+	echo 'Waiting for ' . $want_opponent . ' to challenge you back.';
+}
+else {
+	echo 'Please wait while we match you with another coder.';
+}
+?>
+</div>
 
 <script type="text/javascript">
 function redirect() {

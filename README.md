@@ -13,8 +13,7 @@ During our limited time, we created functionality only for Python.
 ## Todo
 - [X] Add link to main page on challenge page
 - [ ] Put src code in footer
-- [ ] Add javascript
-	- [ ] No lvl selected
+- [X] No lvl selected
 - [ ] Reskin site
 	- [ ] Switch to using sass
 	- [ ] Change highlight color
@@ -25,7 +24,9 @@ During our limited time, we created functionality only for Python.
 	- [ ] winner: immediately redirect saying win ?
 	- [ ] loser: redirect once timer runs out
 - [ ] Tournament functionality
-	- [ ] Enter username to pick opponent
+	- [X] Enter username to pick opponent
+		- [ ] Thoroughly test for bugs
+			- [ ] Test with lots of people
 - [ ] Add more challenges
 	- [ ] 6 Crypto
 	- [ ] 6 Web security

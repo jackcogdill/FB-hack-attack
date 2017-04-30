@@ -47,21 +47,24 @@ if (isset($_GET['osu'])) {
 else if (isset($_GET['udne'])) {
 	$bad_notice = 'The user you challenged does not exist.';
 }
+else if (isset($_GET['nod'])) {
+	$bad_notice = 'Please select a difficulty.';
+}
 
 ?>
 
 <p class="logo"> Hack Attack </p>
 <hr class="underline">
 <form action="challenge/index.php" method="post">
-<ul id="button-wrap">
-	<li>Java&nbsp;
+<div id="button-wrap">
+	<div>Java&nbsp;
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="java" value="Java"></button>
-	</li>
-	<li>Python&nbsp;
+	</div>
+	<div>Python&nbsp;
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
@@ -70,22 +73,37 @@ else if (isset($_GET['udne'])) {
 			<option value="4">4</option>
 		</select>
 		<button type="submit" name="language" class="python" value="Python"></button>
-	</li>
-	<li>Crypto&nbsp;
+	</div>
+	<div id="choose-opponent">
+		<div>
+<?php
+if (!empty($bad_notice)) {
+?>
+<div class="badnotice">
+<?php echo $bad_notice; ?>
+</div>
+<?php
+}
+?>
+			Opponent's username:
+			<input type="text" name="specific-opponent" placeholder="Random" onkeydown="if (event.keyCode == 13) return false;">
+		</div>
+	</div>
+	<div>Crypto&nbsp;
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="crypto" value="Crypto"></button>
-	</li>
-	<li>CTF&nbsp;
+	</div>
+	<div>CTF&nbsp;
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
 		<button type="submit" name="language" class="ctf" value="CTF"></button>
-	</li>
-</ul>
+	</div>
+</div>
 </form>
 
 <?php
