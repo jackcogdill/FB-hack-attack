@@ -39,7 +39,7 @@ button.login {
 	margin: 0 auto;
 }
 
-input.login {
+input {
 	border: 0;
 	outline: 0;
 	background: transparent;
@@ -49,12 +49,12 @@ input.login {
 	display: block;
 }
 
-input.login::-webkit-input-placeholder { color: #ccc; } /* Chrome/Opera/Safari */
-input.login::-moz-placeholder {          color: #ccc; } /* Firefox 19+ */
-input.login:-ms-input-placeholder {      color: #ccc; } /* IE 10+ */
-input.login:-moz-placeholder {           color: #ccc; } /* Firefox 18- */
+input::-webkit-input-placeholder { color: #ccc; } /* Chrome/Opera/Safari */
+input::-moz-placeholder {          color: #ccc; } /* Firefox 19+ */
+input:-ms-input-placeholder {      color: #ccc; } /* IE 10+ */
+input:-moz-placeholder {           color: #ccc; } /* Firefox 18- */
 
-input.login:focus {
+input:focus {
 	border-bottom: 2px #88d388 solid;
 }
 
