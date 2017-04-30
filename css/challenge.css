@@ -2,11 +2,12 @@
 	font-size: 1.4em;
 	text-decoration: underline;
 	color: #88d388;
+	margin-bottom: 0.5em;
 }
 
 #challenge-info {
 	margin-bottom: 1em;
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 #challenge {
@@ -15,11 +16,17 @@
 	width: 45%;
 }
 
-#code {
+textarea#code {
 	display: block;
 	margin: 0 auto;
 	width: 100%;
 	font-family: 'Consolas', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+}
+
+input[type='text']#code {
+	display: inline-block;
+	width: 50%;
+	max-width: 24em;
 }
 
 /* Override codemirror.css file */
@@ -29,20 +36,10 @@
 
 #submit {
 	margin-top: 1em;
-	display: block;
 	float: right;
 }
 
-#answer {
-	margin-top: 2em;
-	font-size: 1.5em;
-}
-
-.correct {
-	color: red;
-}
-
-input[type=submit] {
+/*input[type=submit]#submit {
 	-webkit-border-radius: 0.5em;
 	-moz-border-radius: 0.5em;
 	border-radius: 0.5em;
@@ -53,8 +50,17 @@ input[type=submit] {
 	font-size: 1em;
 }
 
-input[type=submit]:hover {
+input[type=submit]#submit:hover {
 	cursor: pointer;
+}*/
+
+#answer {
+	margin-top: 2em;
+	font-size: 1.5em;
+}
+
+.correct {
+	color: red;
 }
 
 #opponent {

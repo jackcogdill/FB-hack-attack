@@ -4,17 +4,20 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
-$difficulty = 0;
-$code = '';
-$answer = '';
-$minutes = 1;
+$difficulty    = 0;
+$code          = '';
+$answer        = '';
+$minutes       = 1;
 $want_opponent = '';
-$language = '';
+$language      = '';
+$lang_info     = '';
+$chall_info    = '';
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
 $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing challenge
 $waiting_flag = isset($_SESSION['user']['waiting']); // Currently waiting
+$code_flag    = false;
 
 if (isset($_POST['difficulty'])) {
 	foreach($_POST['difficulty'] as $value) {
@@ -270,9 +273,7 @@ if ($match_flag) {
 		$stmt->close();
 	}
 }
-else if ($chall_flag) {
-	$lang_info = $language;
-
+elseif ($chall_flag) {
 	$id = $_SESSION['user']['hash_id'];
 	$sel_stmt = $connect->prepare('
 		SELECT *
@@ -331,6 +332,24 @@ else if ($chall_flag) {
 					$chall_info  = $chall_row['challenge_info'];
 					$out_correct = $chall_row['correct_out'];
 
+					$lang_info = $language;
+
+					// Code or other (cypto, etc) (code_flag)
+					switch ($language) {
+						case 'Python':
+						case 'Java':
+							$code_flag = true;
+							break;
+						case 'Crypto':
+							$lang_info = 'Cryptography';
+							break;
+						case 'CTF':
+							$lang_info = 'Capture the Flag';
+							break;
+						default:
+							break;
+					}
+
 ///////////////////////////////////////////////////////////////
 //           Determine if user completed challenge
 ///////////////////////////////////////////////////////////////
@@ -348,75 +367,84 @@ else if ($chall_flag) {
 		$incorrect_str = 'Sorry, try again';
 
 		// Quick security measures
-		function safe_code($str) {
+		function safe_code($str, $lang) {
 			global $incorrect_str;
 			if (strlen($str) > 1000) {
-				$incorrect_str = 'Your code exceeded the maximum character limit';
+				$incorrect_str = 'Your input exceeded the maximum character limit';
 				return false;
 			}
 
-			$pos = strrpos(strtolower($str), 'import');
-			if ($pos !== false) {
-				$incorrect_str = 'You may not use import';
-				return false;
-			}
+			switch ($lang) {
+				case 'Python':
+				case 'Java':
+					$pos = strrpos(strtolower($str), 'import');
+					if ($pos !== false) {
+						$incorrect_str = 'You may not use import';
+						return false;
+					}
 
-			$pos = strrpos(strtolower($str), 'exec');
-			if ($pos !== false) {
-				$incorrect_str = 'You may not use exec';
-				return false;
-			}
+					$pos = strrpos(strtolower($str), 'exec');
+					if ($pos !== false) {
+						$incorrect_str = 'You may not use exec';
+						return false;
+					}
 
-			$pos = strrpos(strtolower($str), 'eval');
-			if ($pos !== false) {
-				$incorrect_str = 'You may not use eval';
-				return false;
+					$pos = strrpos(strtolower($str), 'eval');
+					if ($pos !== false) {
+						$incorrect_str = 'You may not use eval';
+						return false;
+					}
+					break;
+				default:
+					break;
 			}
 
 			return true;
 		}
 
 		$out = '';
-		switch ($language) {
-			case 'Python':
-				if (safe_code($code) === false) { break; }
+		if (safe_code($code, $language) !== false) {
+			switch ($language) {
+				case 'Python':
+					// Needs chmod 777 challenge
+					$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
+					file_put_contents($file, $code);
 
-				// Needs chmod 777 challenge
-				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
-				file_put_contents($file, $code);
+					$dir = getcwd();
+					// Only allow user scripts to run specific time amount
+					// E.g., 0.5 seconds only
+					// After that, kill the process
+					// This is to protect against infinite loops that will crash the server
+					$cmd = 'python \''.$file.'\'';
+					$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
 
-				$dir = getcwd();
-				// Only allow user scripts to run specific time amount
-				// E.g., 0.5 seconds only
-				// After that, kill the process
-				// This is to protect against infinite loops that will crash the server
-				$cmd = 'python \''.$file.'\'';
-				$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
+					// Delete $file
+					unlink($file);
+					break;
+				case 'Java':
+					$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
+					file_put_contents($file, $code);
 
-				// Delete $file
-				unlink($file);
-				break;
-			case 'Java':
-				if (safe_code($code) === false) { break; }
+					$dir = getcwd();
+					// Compile java code
+					$cmd = 'javac -d \''.$dir.'\' \''.$file.'\'';
+					$out = `python '{$dir}/run.py' 1.5 {$cmd}`;
 
-				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
-				file_put_contents($file, $code);
+					// Run java code
+					$cmd = 'java ' . $java_class;
+					$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
 
-				$dir = getcwd();
-				// Compile java code
-				$cmd = 'javac -d \''.$dir.'\' \''.$file.'\'';
-				$out = `python '{$dir}/run.py' 1.5 {$cmd}`;
-
-				// Run java code
-				$cmd = 'java ' . $java_class;
-				$out = `python '{$dir}/run.py' 0.5 {$cmd}`;
-
-				// Delete files
-				unlink($file);
-				unlink(getcwd() . '/' . $java_class . '.class');
-				break;
-			default:
-				break;
+					// Delete files
+					unlink($file);
+					unlink(getcwd() . '/' . $java_class . '.class');
+					break;
+				case 'Crypto':
+				case 'CTF':
+					$out = $code;
+					break;
+				default:
+					break;
+			}
 		}
 
 		// Compare user output with expected output
@@ -468,8 +496,8 @@ else if ($chall_flag) {
 				// Update answer string with correct points
 				$answer = '<span class="correct">Correct! Get '. $chall_points .' point(s)</span>';
 			}
-			else if ($winner == $opponent) {
-				$answer = '<span class="correct">Sorry, you\'ve been beaten by your opponent.</span>';
+			elseif ($winner == $opponent) {
+				$answer = '<span class="correct">That\'s correct, but your opponent got it first.</span>';
 			}
 		}
 		else {
@@ -502,27 +530,23 @@ else if ($chall_flag) {
 
 require_once("../head_top.php");
 
-/////////////////////////
+//////////////////////////////////////////////////
 if ($chall_flag) {
 ?>
 <link rel="stylesheet" type="text/css" href="../css/challenge.css">
-
+<?php
+	if ($code_flag) { /////////////////////////
+?>
 <!-- Code Mirror files -->
 <script src="../codemirror/lib/codemirror.js"></script>
 <link rel="stylesheet" href="../codemirror/lib/codemirror.css">
 <link rel="stylesheet" type="text/css" href="../codemirror/theme/tomorrow-night-bright.css">
 <script src="../codemirror/mode/python/python.js"></script>
 <script src="../codemirror/mode/clike/clike.js"></script>
-
-<script type="text/javascript">
-function submit() {
-
-}
-</script>
-
 <?php
+	} /////////////////////////
 }
-/////////////////////////
+//////////////////////////////////////////////////
 
 require_once("../head_bottom.php");
 require_once("../header.php");
@@ -576,7 +600,7 @@ window.setInterval(redirect, 500);
 <?php
 }
 //////////////////////////////////////////////////
-else if ($chall_flag) {
+elseif ($chall_flag) {
 ?>
 
 <form id="challenge" action="../challenge/index.php" method="post">
@@ -586,8 +610,25 @@ else if ($chall_flag) {
 	<div id="challenge-info">
 		<?php echo $chall_info; ?>
 	</div>
+<?php
+// Programming language
+if ($code_flag) { //////////////////////////
+?>
 	<textarea id="code" name="code" autocomplete="off"></textarea>
-	<input type="submit" id="submit" value="Submit">
+<?php
+} //////////////////////////
+// Other (Crypto, etc)
+else {
+	$value = 'Answer';
+	if ($lang_info == 'Capture the Flag') {
+		$value = 'Password';
+	}
+?>
+	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
+<?php
+} //////////////////////////
+?>
+	<button type="submit" id="submit">Submit</button>
 	<div id="answer">
 		<?php echo $answer; ?>
 	</div>
@@ -625,6 +666,9 @@ var x = setInterval(function() {
 </script>
 
 <script type="text/javascript">
+<?php
+if ($code_flag) { //////////////////////////
+?>
 var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 	mode:<?php
 		switch($language) {
@@ -649,6 +693,10 @@ $code = str_replace(array("\r","\n"),array("\\r","\\n"), $code);
 echo '"'.$code.'"';
 
 ?>);
+
+<?php
+} //////////////////////////
+?>
 
 function opponent_refresh() {
 	var xhr = new XMLHttpRequest();

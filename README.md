@@ -32,8 +32,11 @@ During our limited time, we created functionality only for Python.
 		- [ ] Thoroughly test for bugs
 			- [ ] Test with lots of people
 - [ ] Add more challenges
-	- [ ] 6 Crypto
-	- [ ] 6 Web security
+	- [ ] Crypto
+		- [X] Created 1
+		- [ ] Make 5 more
+	- [ ] Web security
+		- [ ] Make 6 more
 - [X] Security
 	- [X] Prevent SQL vulns
 	- [X] Hash passwords
