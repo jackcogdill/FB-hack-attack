@@ -304,7 +304,9 @@ else if ($chall_flag) {
 					$chall_info  = $chall_row['challenge_info'];
 					$out_correct = $chall_row['correct_out'];
 
-
+///////////////////////////////////////////////////////////////
+//           Determine if user completed challenge
+///////////////////////////////////////////////////////////////
 	if ($language == 'Java') {
 		$hash1 = hash('sha256', $_SESSION['user']['username'] . $challenge_id . $start_time);
 		$java_class = 'Ha' . hash('adler32', $hash1);
@@ -456,7 +458,8 @@ else if ($chall_flag) {
 	}
 }';
 	}
-
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
 				}
 

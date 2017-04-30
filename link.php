@@ -2,24 +2,32 @@
 require_once('db.php');
 
 $user = $_SESSION['user']['username'];
-$select = "
+$stmt = $connect->prepare('
 	SELECT *
 	FROM ongoing
 	WHERE
-		user1 = '{$user}' OR user2 = '{$user}'
-";
+		user1 = ? OR user2 = ?
+');
+if ($stmt) {
+	$stmt->bind_param(
+		"ss",
+		$user,
+		$user
+	);
+	$stmt->execute();
 
-$query = mysqli_query($connect, $select);
-$rows  = mysqli_num_rows($query);
+	$result = $stmt->get_result();
+	if ($result->num_rows === 1) {
+		$row = $result->fetch_assoc(); // Get row
 
-if ($rows == 1) {
-	$row = mysqli_fetch_array($query, MYSQLI_ASSOC);
-
-	if (isset($_SESSION['user']['waiting'])) {
-		unset($_SESSION['user']['waiting']);
+		if (isset($_SESSION['user']['waiting'])) {
+			unset($_SESSION['user']['waiting']);
+		}
+		$_SESSION['user']['hash_id'] = $row['id'];
+		echo 'index.php';
 	}
-	$_SESSION['user']['hash_id'] = $row['id'];
-	echo 'index.php';
+
+	$stmt->close();
 }
 
 ?>
