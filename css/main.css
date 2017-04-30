@@ -22,9 +22,9 @@ a:active {
 	text-align: center;
 
 	/* Default <p> values */
-    display: inline-block;
-    margin: 1em 0;
-    text-decoration: none;
+	display: block;
+	margin: 1em 0;
+	text-decoration: none;
 }
 
 #wrap {
@@ -99,6 +99,7 @@ input:focus {
 }
 
 #header .logo {
+	display: inline-block;
 	font-size: 1em;
 	line-height: 1.5em;
 	text-align: left;
