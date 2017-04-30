@@ -6,13 +6,13 @@ require_once("../db.php");
 $bad_notice = '';
 
 if (isset($_GET['utaken'])) {
-	$bad_notice = 'Username has already been taken';
+	$bad_notice = 'Username has already been taken.';
 }
-else if (isset($_GET['etaken'])) {
-	$bad_notice = 'Email has already been taken';
+elseif (isset($_GET['etaken'])) {
+	$bad_notice = 'Email has already been taken.';
 }
-else if (isset($_GET['blank'])) {
-	$bad_notice = 'Cannot leave fields blank';
+elseif (isset($_GET['blank'])) {
+	$bad_notice = 'Cannot leave fields blank.';
 }
 
 if (isset($_POST['submit'])) {
@@ -75,17 +75,38 @@ if (isset($_POST['submit'])) {
 		$eml_stmt->close();
 	}
 
+
+	// Prevent brute forcing and rainbow tables with a random salt
+	$salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
+
+	// Hashing this loses the original password
+	// Protect against rainbow tables and brute forcing
+	// Rehashing this 2^16 times with salt
+	for($round = 0; $round < 65536; $round++) {
+		$password = hash('sha512', $password . $salt);
+	}
+
+	// Not storing the original password, just the hashed
+	// version of it (with the random salt)
 	$stmt = $connect->prepare('
 		INSERT INTO users
-			(first_name, last_name, username, email, password, points)
+			(first_name, last_name, username, email, password, salt, points)
 		VALUES
-			(?, ?, ?, ?, ?, ?)
+			(?, ?, ?, ?, ?, ?, ?)
 	');
 
 	if ($stmt) {
-		$stmt->bind_param("sssssi", $first_name, $last_name, $username, $email, $password, $points);
+		$stmt->bind_param(
+			"ssssssi",
+			$first_name,
+			$last_name,
+			$username,
+			$email,
+			$password,
+			$salt,
+			$points
+		);
 		$stmt->execute();
-		$rows =  $stmt->affected_rows;
 		$stmt->close();
 
 		// Redirect the user

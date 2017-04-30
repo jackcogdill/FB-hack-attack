@@ -12,7 +12,10 @@ if (!empty($_SESSION['user'])) {
 $notice = '';
 
 if (isset($_GET['registered'])) {
-	$notice = 'Successfully registered! Now you can login below';
+	$notice = 'Successfully registered! Now you can login below.';
+}
+elseif (isset($_GET['ip'])) {
+	$notice = 'Incorrect password.';
 }
 
 if (isset($_POST)) {
@@ -34,18 +37,17 @@ if (isset($_POST)) {
 			last_name,
 			username,
 			password,
+			salt,
 			points
 		FROM users
 		WHERE
-			(username = ? OR email = ?) AND
-			password = ?
+			(username = ? OR email = ?)
 	');
 	if ($stmt) {
 		$stmt->bind_param(
-			"sss",
+			"ss",
 			$user,
-			$user,
-			$pass
+			$user
 		);
 		$stmt->execute();
 
@@ -53,13 +55,25 @@ if (isset($_POST)) {
 		if ($result->num_rows === 1) {
 			$row = $result->fetch_assoc(); // Get row
 
-			// Remove password
-			unset($row['password']);
+			// Compare hashes to check if correct password
+			for ($round = 0; $round < 65536; $round++) {
+				$pass = hash('sha512', $pass . $row['salt']);
+			}
 
-			$_SESSION['user'] = $row;
+			if ($pass === $row['password']) {
+				// Remove sensitive values even though session is stored server side
+				unset($row['salt']);
+				unset($row['password']);
 
-			header('Location: ../');
-			die("Redirecting");
+				$_SESSION['user'] = $row;
+
+				header('Location: ../');
+				die("Redirecting");
+			}
+			else {
+				header('Location: ../login/index.php?ip');
+				die("Redirecting");
+			}
 		}
 
 		$stmt->close();
