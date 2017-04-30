@@ -130,11 +130,11 @@ if (!empty($bad_notice)) {
 <?php
 }
 ?>
-	<input class="login" type="text" name="first_name" placeholder="First Name"> <br> <br>
-	<input class="login" type="text" name="last_name" placeholder="Last Name"> <br> <br>
-	<input class="login" type="text" name="username" placeholder="Username"> <br><br>
-	<input class="login" type="email" name="email" placeholder="Email"> <br><br>
-	<input class="login" type="password" name="password" placeholder="Password"> <br> <br>
+	<input class="login" type="text" name="first_name" placeholder="First Name" spellcheck="false"><br><br>
+	<input class="login" type="text" name="last_name" placeholder="Last Name" spellcheck="false"><br><br>
+	<input class="login" type="text" name="username" placeholder="Username" spellcheck="false"><br><br>
+	<input class="login" type="email" name="email" placeholder="Email" spellcheck="false"><br><br>
+	<input class="login" type="password" name="password" placeholder="Password"><br><br>
 	<button class="login" type="submit" name="submit">Register</button>
 </form>
 

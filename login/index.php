@@ -103,8 +103,8 @@ elseif (!empty($notice)) {
 <?php
 }
 ?>
-	<input class="login" type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
-	<input class="login" type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
+	<input class="login" type="username" name="username" placeholder="Username" autocomplete="off" spellcheck="false"> <br><br>
+	<input class="login" type="password" name="password" placeholder="Password" autocomplete="off" spellcheck="false"> <br><br>
 
 	<button type="submit" class="login" name="submit">Login</button>
 </form>
