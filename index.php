@@ -40,6 +40,14 @@ if (isset($_SESSION['user']['waiting'])) {
 // End reset matches
 // =====================
 
+$bad_notice = '';
+if (isset($_GET['osu'])) {
+	$bad_notice = 'You cannot challenge yourself.';
+}
+else if (isset($_GET['udne'])) {
+	$bad_notice = 'The user you challenged does not exist.';
+}
+
 ?>
 
 <p class="logo"> Hack Attack </p>

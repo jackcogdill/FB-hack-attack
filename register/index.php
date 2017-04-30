@@ -78,7 +78,7 @@ require_once("../head_bottom.php");
 ?>
 
 <p class="logo"> Hack Attack </p>
-
+<form class="login" action="../register/index.php" method="POST">
 <?php
 if (!empty($bad_notice)) {
 ?>
@@ -88,8 +88,6 @@ if (!empty($bad_notice)) {
 <?php
 }
 ?>
-
-<form class="login" action="../register/index.php" method="POST">
 	<input class="login" type="text" name="first_name" placeholder="First Name"> <br> <br>
 	<input class="login" type="text" name="last_name" placeholder="Last Name"> <br> <br>
 	<input class="login" type="text" name="username" placeholder="Username"> <br><br>

@@ -73,8 +73,7 @@ input.login:focus {
 .notice, .badnotice {
 	position: absolute;
 	display: block;
-	width: 100%;
-	margin: 0.5em 0 0 0.5em;
+	margin-top: -2.5em;
 }
 
 #header {

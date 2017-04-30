@@ -63,8 +63,8 @@ require_once("../head_bottom.php");
 ?>
 <div id="wrap">
 <p class="logo"> Hack Attack </p>
+<form class="login" method="post" action="../login/index.php">
 <?php
-
 if (!empty($notice)) {
 ?>
 <div class="notice">
@@ -72,9 +72,7 @@ if (!empty($notice)) {
 </div>
 <?php
 }
-
 ?>
-<form class="login" method="post" action="../login/index.php">
 	<input class="login" type="username" name="username" placeholder="Username" autocomplete="off"> <br> <br>
 	<input class="login" type="password" name="password" placeholder="Password" autocomplete="off"> <br><br>
 
