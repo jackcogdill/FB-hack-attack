@@ -319,7 +319,7 @@ else if ($chall_flag) {
 		$incorrect_str = 'Sorry, try again';
 
 		// Quick security measures
-		function safe_code($str) {
+		function safe_code($str, $lang) {
 			global $incorrect_str;
 			if (strlen($str) > 1000) {
 				$incorrect_str = 'Your code exceeded the maximum character limit';
@@ -332,13 +332,27 @@ else if ($chall_flag) {
 				return false;
 			}
 
+			if ($lang === 'Python') {
+				$pos = strrpos(strtolower($str), 'exec');
+				if ($pos !== false) {
+					$incorrect_str = 'You may not use exec';
+					return false;
+				}
+
+				$pos = strrpos(strtolower($str), 'eval');
+				if ($pos !== false) {
+					$incorrect_str = 'You may not use eval';
+					return false;
+				}
+			}
+
 			return true;
 		}
 
 		$out = '';
 		switch ($language) {
 			case 'Python':
-				if (safe_code($code) === false) { break; }
+				if (safe_code($code, $language) === false) { break; }
 
 				// Needs chmod 777 challenge
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.py';
@@ -356,7 +370,7 @@ else if ($chall_flag) {
 				unlink($file);
 				break;
 			case 'Java':
-				if (safe_code($code) === false) { break; }
+				if (safe_code($code, $language) === false) { break; }
 
 				$file = getcwd() . '/' . hash('md5', $_SESSION['user']['username'] . time()) . 'test.java';
 				file_put_contents($file, $code);
