@@ -20,15 +20,14 @@ if (isset($_POST)) {
 	$pass   = '';
 
 	if (!empty($_POST['username'])) {
-		$user = mysqli_real_escape_string($connect, $_POST['username']);
+		$user = $_POST['username'];
 	}
 
 	if (!empty($_POST['password'])) {
-		$pass = mysqli_real_escape_string($connect, $_POST['password']);
+		$pass = $_POST['password'];
 	}
-	
 
-	$select = "
+	$stmt = $connect->prepare('
 		SELECT
 			id,
 			first_name,
@@ -38,23 +37,32 @@ if (isset($_POST)) {
 			points
 		FROM users
 		WHERE
-			(username = '{$user}' OR email = '{$user}') AND
-			password = '{$pass}'
-	";
+			(username = ? OR email = ?) AND
+			password = ?
+	');
+	if ($stmt) {
+		$stmt->bind_param(
+			"sss",
+			$user,
+			$user,
+			$pass
+		);
+		$stmt->execute();
 
-	$query = mysqli_query($connect, $select);
-	$rows  = mysqli_num_rows($query);
+		$result = $stmt->get_result();
+		if ($result->num_rows === 1) {
+			$row = $result->fetch_assoc(); // Get row
 
-	if ($rows == 1) {
-		$row = mysqli_fetch_array($query, MYSQLI_ASSOC);
+			// Remove password
+			unset($row['password']);
 
-		// Remove password
-		unset($row['password']);
+			$_SESSION['user'] = $row;
 
-		$_SESSION['user'] = $row;
+			header('Location: ../');
+			die("Redirecting");
+		}
 
-		header('Location: ../');
-		die("Redirecting");
+		$stmt->close();
 	}
 }
 

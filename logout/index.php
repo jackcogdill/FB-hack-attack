@@ -7,21 +7,36 @@ require_once("../secure.php");
 // =====================
 // Ongoing
 $user = $_SESSION['user']['username'];
-$select = "
+$og_stmt = $connect->prepare('
 	DELETE FROM ongoing
 	WHERE (
-		user1 = '{$user}' OR
-		user2 = '{$user}'
+		user1 = ? OR
+		user2 = ?
 	)
-";
-$query = mysqli_query($connect, $select);
+');
+if ($og_stmt) {
+	$og_stmt->bind_param(
+		"ss",
+		$user,
+		$user
+	);
+	$og_stmt->execute();
+	$og_stmt->close();
+}
 
 // Waiting
-$select = "
+$wait_stmt = $connect->prepare('
 	DELETE FROM waiting
-	WHERE username = '{$user}'
-";
-$query = mysqli_query($connect, $select);
+	WHERE username = ?
+');
+if ($wait_stmt) {
+	$wait_stmt->bind_param(
+		"s",
+		$user
+	);
+	$wait_stmt->execute();
+	$wait_stmt->close();
+}
 // End reset matches
 // =====================
 

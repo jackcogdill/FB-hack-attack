@@ -16,50 +16,71 @@ else if (isset($_GET['blank'])) {
 }
 
 if (isset($_POST['submit'])) {
-	$first_name = mysqli_real_escape_string($connect, ($_POST['first_name']) );
-	$last_name  = mysqli_real_escape_string($connect, ($_POST['last_name'])  );
-	$username   = mysqli_real_escape_string($connect, ($_POST['username'])   );
-	$email      = mysqli_real_escape_string($connect, ($_POST['email'])      );
-	$password   = mysqli_real_escape_string($connect, ($_POST['password'])   );
-	$points     = mysqli_real_escape_string($connect, 0                      );
+	$first_name = $_POST['first_name'];
+	$last_name  = $_POST['last_name'];
+	$username   = $_POST['username'];
+	$email      = $_POST['email'];
+	$password   = $_POST['password'];
+	$points     = 0;
 
-	if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
+	if (
+		empty($first_name) || empty($last_name) || empty($username) ||
+		empty($email)      || empty($password)
+	) {
 		header('Location: ../register/index.php?blank');
 		die("Redirecting");
 	}
 
 	// Make sure username is unique
-	$select = "
+	$usr_stmt = $connect->prepare('
 		SELECT username
 		FROM users
-		WHERE username = '{$username}'
-	";
+		WHERE username = ?
+	');
+	if ($usr_stmt) {
+		$usr_stmt->bind_param(
+			"s",
+			$username
+		);
+		$usr_stmt->execute();
 
-	$query = mysqli_query($connect, $select);
-	$rows  = mysqli_num_rows($query);
+		$result = $usr_stmt->get_result();
+		if ($result->num_rows !== 0) {
+			header('Location: ../register/index.php?utaken');
+			die("Redirecting");
+		}
 
-	if ($rows != 0) {
-		header('Location: ../register/index.php?utaken');
-		die("Redirecting");
+		$usr_stmt->close();
 	}
 
 	// Make sure email is unique
-	$select = "
+	$eml_stmt = $connect->prepare('
 		SELECT email
 		FROM users
-		WHERE email = '{$email}'
-	";
+		WHERE email = ?
+	');
+	if ($eml_stmt) {
+		$eml_stmt->bind_param(
+			"s",
+			$email
+		);
+		$eml_stmt->execute();
 
-	$query = mysqli_query($connect, $select);
-	$rows  = mysqli_num_rows($query);
+		$result = $eml_stmt->get_result();
+		if ($result->num_rows !== 0) {
+			header('Location: ../register/index.php?etaken');
+			die("Redirecting");
+		}
 
-	if ($rows != 0) {
-		header('Location: ../register/index.php?etaken');
-		die("Redirecting");
+		$eml_stmt->close();
 	}
 
-
-	$stmt = $connect->prepare("INSERT INTO users (first_name, last_name, username, email, password, points) VALUES(?, ?, ?, ?, ?, ?)");
+	$stmt = $connect->prepare('
+		INSERT INTO users
+			(first_name, last_name, username, email, password, points)
+		VALUES
+			(?, ?, ?, ?, ?, ?)
+	');
 
 	if ($stmt) {
 		$stmt->bind_param("sssssi", $first_name, $last_name, $username, $email, $password, $points);
