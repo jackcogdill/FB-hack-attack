@@ -18,6 +18,7 @@ During our limited time, we created functionality only for Python.
 	- [ ] Switch to using sass
 	- [ ] Change highlight color
 	- [ ] Use SVGs
+	- [ ] Add javascript loading swirl
 - [ ] Email activation
 - [ ] login not login/index.php
 - [ ] Redirect user if challenge is already ended
