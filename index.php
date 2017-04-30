@@ -70,7 +70,7 @@ else if (isset($_GET['nod'])) {
 
 ?>
 
-<p class="logo"> Hack Attack </p>
+<a class="logo" href="../"> Hack Attack </a>
 <hr class="underline">
 <form action="challenge/index.php" method="post">
 <div id="button-wrap">
