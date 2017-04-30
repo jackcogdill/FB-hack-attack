@@ -80,7 +80,7 @@ if ($match_flag) {
 		$query = '
 			SELECT *
 			FROM waiting
-			WHERE language = ? AND opponent != NULL
+			WHERE language = ? AND opponent IS NULL
 			LIMIT 1
 		';
 	}
