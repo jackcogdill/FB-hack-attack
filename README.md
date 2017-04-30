@@ -31,6 +31,7 @@ During our limited time, we created functionality only for Python.
 	- [X] Enter username to pick opponent
 		- [ ] Thoroughly test for bugs
 			- [ ] Test with lots of people
+- [ ] Add titles and hints to challenges
 - [ ] Add more challenges
 	- [ ] Crypto
 		- [X] Created 1
