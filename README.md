@@ -30,7 +30,9 @@ During our limited time, we created functionality only for Python.
 - [ ] Add more challenges
 	- [ ] 6 Crypto
 	- [ ] 6 Web security
-- [ ] Prevent SQL vulns
+- [ ] Security
+	- [ ] Prevent SQL vulns
+	- [ ] Hash passwords
 - [ ] Fix bugs
 	- [X] Timer broken for Java 1 on windows
 		- [X] Test this on windows
