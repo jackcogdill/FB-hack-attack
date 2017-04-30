@@ -10,12 +10,13 @@ if (!empty($_SESSION['user'])) {
 }
 
 $notice = '';
+$badnotice = '';
 
 if (isset($_GET['registered'])) {
 	$notice = 'Successfully registered! Now you can login below.';
 }
 elseif (isset($_GET['ip'])) {
-	$notice = 'Incorrect password.';
+	$badnotice = 'Incorrect password.';
 }
 
 if (isset($_POST)) {
@@ -87,11 +88,18 @@ require_once("../head_bottom.php");
 <a class="logo" href="../"> Hack Attack </a>
 <form class="login" method="post" action="../login/index.php">
 <?php
-if (!empty($notice)) {
+if (!empty($badnotice)) {
 ?>
-<div class="notice">
-<?php echo $notice; ?>
-</div>
+	<div class="badnotice">
+		<?php echo $badnotice; ?>
+	</div>
+<?php
+}
+elseif (!empty($notice)) {
+?>
+	<div class="notice">
+		<?php echo $notice; ?>
+	</div>
 <?php
 }
 ?>
