@@ -80,7 +80,7 @@ if ($match_flag) {
 		$query = '
 			SELECT *
 			FROM waiting
-			WHERE language = ?
+			WHERE language = ? AND opponent != NULL
 			LIMIT 1
 		';
 	}
@@ -116,21 +116,48 @@ if ($match_flag) {
 		// or your opponent is not waiting:
 		// get added to waiting list
 		if ($result->num_rows === 0) {
-			$wait_stmt = $connect->prepare('
-				INSERT INTO waiting
-					(username, first_name, last_name, language, points, opponent)
-				VALUES (?, ?, ?, ?, ?, ?)
-			');
+			$wait_query = '';
+			if (!empty($want_opponent)) {
+				$wait_query = '
+					INSERT INTO waiting
+						(username, first_name, last_name, language, points, opponent)
+					VALUES (?, ?, ?, ?, ?, ?)
+				';
+			}
+			else {
+				// Keep opponent as null
+				$wait_query = '
+					INSERT INTO waiting
+						(username, first_name, last_name, language, points)
+					VALUES (?, ?, ?, ?, ?)
+				';
+			}
+
+			$wait_stmt = $connect->prepare($wait_query);
 			if ($wait_stmt) {
-				$wait_stmt->bind_param(
-					"ssssis",
-					$_SESSION['user']['username'],
-					$_SESSION['user']['first_name'],
-					$_SESSION['user']['last_name'],
-					$language,
-					$_SESSION['user']['points'],
-					$want_opponent
-				);
+				if (!empty($want_opponent)) {
+					$wait_stmt->bind_param(
+						"ssssis",
+						$_SESSION['user']['username'],
+						$_SESSION['user']['first_name'],
+						$_SESSION['user']['last_name'],
+						$language,
+						$_SESSION['user']['points'],
+						$want_opponent
+					);
+				}
+				// Keep opponent as null
+				else {
+					$wait_stmt->bind_param(
+						"ssssi",
+						$_SESSION['user']['username'],
+						$_SESSION['user']['first_name'],
+						$_SESSION['user']['last_name'],
+						$language,
+						$_SESSION['user']['points']
+					);
+				}
+
 				$wait_stmt->execute();
 				$wait_stmt->close();
 			}
