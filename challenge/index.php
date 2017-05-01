@@ -521,15 +521,12 @@ elseif ($chall_flag) {
 				case 'CTF':
 					switch ($challenge_num) {
 						case 3:
+							$out_correct = 'ctf3 correct';
+							$out = 'wrong'; // User loses by default
 							if (isset($_POST['ctf3-age'])) {
-								$out_correct = 'ctf3 correct';
 								// Make the user win
 								if ($_POST['ctf3-age'] == '1337') {
 									$out = 'ctf3 correct';
-								}
-								// Make the user lose
-								else {
-									$out = 'wrong';
 								}
 							}
 							break;
