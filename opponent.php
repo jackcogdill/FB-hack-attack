@@ -5,6 +5,11 @@ if (!isset($_SESSION['user']['hash_id'])) {
 	die();
 }
 
+$final_data = array(
+	'text' => '',
+	'left' => '0'
+);
+
 $user = $_SESSION['user']['username'];
 $id   = $_SESSION['user']['hash_id'];
 $stmt = $connect->prepare('
@@ -39,21 +44,27 @@ if ($stmt) {
 			$points = $row['points1'];
 		}
 
-
-?>
-
+		$final_data['text'] = $final_data['text'] . <<<HTML
 <div id="opponent-title">Opponent</div>
 <hr class="underline">
-<div><?php echo $name . ' | ' . $points . ' points'; ?></div>
+HTML;
 
-<?php
+		$final_data['text'] = $final_data['text'] . '<div>' . $name . ' | ' . $points . ' points' . '</div>';
 
 		if ($row['winner'] == $opponent) {
-			echo '<p style="color: red;">Your opponent has beaten you.<p>';
+			$final_data['text'] = $final_data['text'] . <<<HTML
+<p style="color: red;">Your opponent has beaten you.<p>
+HTML;
+
 		}
+	}
+	elseif ($result->num_rows === 0) {
+		$final_data['left'] = '1';
 	}
 
 	$stmt->close();
 }
+
+echo json_encode($final_data);
 
 ?>

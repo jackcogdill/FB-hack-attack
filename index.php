@@ -10,33 +10,38 @@ require_once("head_top.php");
 require_once("head_bottom.php");
 require_once("header.php");
 
-// Reset any matches
-// =====================
-// Ongoing
+// User might be in ongoing match
+// If so, redirect
 $user = $_SESSION['user']['username'];
-$delo_stmt = $connect->prepare('
-	DELETE FROM ongoing
+$ongo_stmt = $connect->prepare('
+	SELECT *
+	FROM ongoing
 	WHERE (
 		user1 = ? OR
 		user2 = ?
 	)
+	LIMIT 1
 ');
-if ($delo_stmt) {
-	$delo_stmt->bind_param(
+if ($ongo_stmt) {
+	$ongo_stmt->bind_param(
 		"ss",
 		$user,
 		$user
 	);
-	$delo_stmt->execute();
-	$delo_stmt->close();
+	$ongo_stmt->execute();
+
+	$result = $ongo_stmt->get_result();
+	if ($result->num_rows === 1) {
+		header('Location: challenge/index.php');
+		die("Redirecting");
+	}
+
+	$ongo_stmt->close();
 }
 
-// Delete hash id
-if (isset($_SESSION['user']['hash_id'])) {
-	unset($_SESSION['user']['hash_id']);
-}
 
-// Waiting
+// Reset Waiting
+// =====================
 $delw_stmt = $connect->prepare('
 	DELETE FROM waiting
 	WHERE username = ?
@@ -54,18 +59,20 @@ if ($delw_stmt) {
 if (isset($_SESSION['user']['waiting'])) {
 	unset($_SESSION['user']['waiting']);
 }
-// End reset matches
 // =====================
 
 $bad_notice = '';
 if (isset($_GET['osu'])) {
 	$bad_notice = 'You cannot challenge yourself.';
 }
-else if (isset($_GET['udne'])) {
+elseif (isset($_GET['udne'])) {
 	$bad_notice = 'The user you challenged does not exist.';
 }
-else if (isset($_GET['nod'])) {
+elseif (isset($_GET['nod'])) {
 	$bad_notice = 'Please select a difficulty.';
+}
+elseif (isset($_GET['ce'])) {
+	$bad_notice = 'Challenge has ended.';
 }
 
 ?>
@@ -103,7 +110,7 @@ if (!empty($bad_notice)) {
 }
 ?>
 			Opponent's username:
-			<input type="text" name="specific-opponent" placeholder="Random" onkeydown="if (event.keyCode == 13) return false;">
+			<input type="text" name="specific-opponent" autocomplete="off" placeholder="Random" onkeydown="if (event.keyCode == 13) return false;">
 		</div>
 	</div>
 	<div>Crypto&nbsp;
@@ -124,6 +131,9 @@ if (!empty($bad_notice)) {
 			<option value="1">1</option>
 			<option value="2">2</option>
 			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
 		</select>
 		<button type="submit" name="language" class="ctf" value="CTF"></button>
 	</div>

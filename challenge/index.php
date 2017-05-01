@@ -4,6 +4,35 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
+function destroy_game($usr) {
+	global $connect;
+	$delo_stmt = $connect->prepare('
+		DELETE FROM ongoing
+		WHERE (
+			user1 = ? OR
+			user2 = ?
+		)
+		LIMIT 1
+	');
+	if ($delo_stmt) {
+		$delo_stmt->bind_param(
+			"ss",
+			$usr,
+			$usr
+		);
+		$delo_stmt->execute();
+		$delo_stmt->close();
+	}
+
+	// Delete hash id
+	if (isset($_SESSION['user']['hash_id'])) {
+		unset($_SESSION['user']['hash_id']);
+	}
+
+	header('Location: ../index.php');
+	die("Redirecting");
+}
+
 $difficulty    = 0;
 $code          = '';
 $answer        = '';
@@ -13,12 +42,14 @@ $language      = '';
 $lang_info     = '';
 $chall_info    = '';
 $challenge_num = 0;
+$code          = '';
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
 $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing challenge
 $waiting_flag = isset($_SESSION['user']['waiting']); // Currently waiting
 $code_flag    = false;
+$leave_flag = isset($_POST['leave']);
 
 if (isset($_POST['difficulty'])) {
 	foreach($_POST['difficulty'] as $value) {
@@ -290,15 +321,19 @@ elseif ($chall_flag) {
 		$sel_stmt->execute();
 
 		$result = $sel_stmt->get_result();
-		if ($result->num_rows === 1) {
+		// Challenge no longer exists, redirect
+		if ($result->num_rows === 0) {
+			header('Location: ../index.php?ce');
+			die("Redirecting");
+		}
+		elseif ($result->num_rows === 1) {
 			$row = $result->fetch_assoc(); // Get row
-
 
 			$start_time = $row['start_time'];
 			$winner = $row['winner'];
 
 			$opponent = NULL;
-			$user   = $_SESSION['user']['username'];
+			$user     = $_SESSION['user']['username'];
 			// Opponent is user2
 			if ($row['user1'] == $user) {
 				$opponent = $row['user2'];
@@ -309,6 +344,11 @@ elseif ($chall_flag) {
 			}
 
 			$challenge_id = $row['challenge_id'];
+
+			// Leave the game
+			if ($leave_flag) {
+				destroy_game($user);
+			}
 
 
 			$chall_stmt = $connect->prepare('
@@ -334,8 +374,17 @@ elseif ($chall_flag) {
 					$out_correct   = $chall_row['correct_out'];
 					$challenge_num = $chall_row['challenge_num'];
 
-
 					$lang_info = $language;
+
+
+					// Challenge is over
+					// Delete from ongoing and redirect
+					// ==============================================
+					if (time() - $start_time > $minutes * 60) {
+						destroy_game($user);
+					}
+					// ==============================================
+
 
 					// Code or other (cypto, etc) (code_flag)
 					switch ($language) {
@@ -361,13 +410,38 @@ elseif ($chall_flag) {
 		$java_class = 'Ha' . hash('adler32', $hash1);
 	}
 
-	if (!empty($_POST['code'])) {
+	// Code
+	if (isset($_POST['code'])) {
 		$code = $_POST['code'];
+	}
 
+	// For CTF 2
+	if ($language == 'CTF') {
+		switch ($challenge_num) {
+			case 2:
+				if (!isset($_GET['file'])) {
+					header('Location: ../challenge/index.php?file=login.php');
+					die("Redirecting");
+				}
+				break;
+			case 3:
+			case 4:
+				$code = "placeholder";
+				break;
+			case 6:
+				// Answer for ctf 6
+				$out_correct = $row['id'];
+				break;
+			default:
+				break;
+		}
+	}
+
+	if (!empty($code)) {
 		// Filter non-ascii characters
 		$code = iconv("UTF-8", "ASCII//IGNORE", $code);
 
-		$incorrect_str = 'Sorry, try again';
+		$incorrect_str = 'Sorry, that\'s incorrect. Try again.';
 
 		// Quick security measures
 		function safe_code($str, $lang) {
@@ -442,8 +516,38 @@ elseif ($chall_flag) {
 					unlink(getcwd() . '/' . $java_class . '.class');
 					break;
 				case 'Crypto':
-				case 'CTF':
 					$out = $code;
+					break;
+				case 'CTF':
+					switch ($challenge_num) {
+						case 3:
+							$out_correct = 'ctf3 correct';
+							$out = 'wrong'; // User loses by default
+							if (isset($_POST['ctf3-age'])) {
+								// Make the user win
+								if ($_POST['ctf3-age'] == '1337') {
+									$out = 'ctf3 correct';
+								}
+							}
+							break;
+						case 4:
+							$ua = $_SERVER['HTTP_USER_AGENT'];
+							$chall_info .= '<br><br><strong>User agent:</strong> ' . $ua;
+
+							$out_correct = 'ctf4 correct';
+							// Make the user win
+							if ($ua === 'HackAttacks') {
+								$out = 'ctf4 correct';
+							}
+							// Make the user lose
+							else {
+								$out = 'wrong';
+							}
+							break;
+						default:
+							$out = $code;
+							break;
+					}
 					break;
 				default:
 					break;
@@ -502,6 +606,9 @@ elseif ($chall_flag) {
 			elseif ($winner == $opponent) {
 				$answer = '<span class="correct">That\'s correct, but your opponent got it first.</span>';
 			}
+			else {
+				$answer = '<span class="correct">Correct! Already got points.</span>';
+			}
 		}
 		else {
 			$answer = '<span class="correct">'. $incorrect_str .'</span>';
@@ -527,6 +634,14 @@ elseif ($chall_flag) {
 
 		$sel_stmt->close();
 	}
+}
+elseif ($waiting_flag) {
+
+}
+// Nothing to display, redirect
+else {
+	header('Location: ../index.php?ce');
+	die("Redirecting");
 }
 
 
@@ -604,9 +719,13 @@ window.setInterval(redirect, 500);
 }
 //////////////////////////////////////////////////
 elseif ($chall_flag) {
+	$action = '../challenge/index.php';
+	if ($lang_info == 'Capture the Flag' && $challenge_num === 2) {
+		$action = '../challenge/index.php?file=login.php';
+	}
 ?>
 
-<form id="challenge" action="../challenge/index.php" method="post">
+<form id="challenge" action="<?php echo $action; ?>" method="post">
 	<div id="language-info">
 		<?php echo $lang_info; ?>
 	</div>
@@ -630,17 +749,163 @@ else {
 			echo '<!-- Good job! You found the password: "La4NrQCUvbzscKeL" -->';
 		}
 		elseif ($challenge_num === 3) {
-			?>
-				<!--<iframe class="game-frame" src="/secret_files/bruh.php"></iframe>-->
-			<?php
+?>
+	<select name="ctf3-age">
+		<option value="">Age</option>
+		<option value="0">0</option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		<option value="21">21</option>
+		<option value="22">22</option>
+		<option value="23">23</option>
+		<option value="24">24</option>
+		<option value="25">25</option>
+		<option value="26">26</option>
+		<option value="27">27</option>
+		<option value="28">28</option>
+		<option value="29">29</option>
+		<option value="30">30</option>
+		<option value="31">31</option>
+		<option value="32">32</option>
+		<option value="33">33</option>
+		<option value="34">34</option>
+		<option value="35">35</option>
+		<option value="36">36</option>
+		<option value="37">37</option>
+		<option value="38">38</option>
+		<option value="39">39</option>
+		<option value="40">40</option>
+		<option value="41">41</option>
+		<option value="42">42</option>
+		<option value="43">43</option>
+		<option value="44">44</option>
+		<option value="45">45</option>
+		<option value="46">46</option>
+		<option value="47">47</option>
+		<option value="48">48</option>
+		<option value="49">49</option>
+		<option value="50">50</option>
+		<option value="51">51</option>
+		<option value="52">52</option>
+		<option value="53">53</option>
+		<option value="54">54</option>
+		<option value="55">55</option>
+		<option value="56">56</option>
+		<option value="57">57</option>
+		<option value="58">58</option>
+		<option value="59">59</option>
+		<option value="60">60</option>
+		<option value="61">61</option>
+		<option value="62">62</option>
+		<option value="63">63</option>
+		<option value="64">64</option>
+		<option value="65">65</option>
+		<option value="66">66</option>
+		<option value="67">67</option>
+		<option value="68">68</option>
+		<option value="69">69</option>
+		<option value="70">70</option>
+		<option value="71">71</option>
+		<option value="72">72</option>
+		<option value="73">73</option>
+		<option value="74">74</option>
+		<option value="75">75</option>
+		<option value="76">76</option>
+		<option value="77">77</option>
+		<option value="78">78</option>
+		<option value="79">79</option>
+		<option value="80">80</option>
+		<option value="81">81</option>
+		<option value="82">82</option>
+		<option value="83">83</option>
+		<option value="84">84</option>
+		<option value="85">85</option>
+		<option value="86">86</option>
+		<option value="87">87</option>
+		<option value="88">88</option>
+		<option value="89">89</option>
+		<option value="90">90</option>
+		<option value="91">91</option>
+		<option value="92">92</option>
+		<option value="93">93</option>
+		<option value="94">94</option>
+		<option value="95">95</option>
+		<option value="96">96</option>
+		<option value="97">97</option>
+		<option value="98">98</option>
+		<option value="99">99</option>
+	</select>
+<?php
 		}
 	}
+	if ($lang_info == 'Capture the Flag' && ($challenge_num === 3 || $challenge_num === 4 || $challenge_num === 6)) {}
+	elseif ($lang_info == 'Capture the Flag' && $challenge_num === 2 && isset($_GET['file']) && $_GET['file'] === 'password.php') {
+		echo 'administrator:h2L2AweW';
+	}
+	else {
 ?>
-	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
+	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false" autocomplete="off" onkeydown="if (event.keyCode == 13) return false;">
 <?php
+	}
+	if ($lang_info == 'Capture the Flag' && $challenge_num === 6) {
+		$error = true;
+		if (isset($_GET['page'])) {
+			switch($_GET['page']) {
+				case 'contact.txt':
+				case 'home.txt':
+					$error = false;
+					echo file_get_contents('pages/' . $_GET['page'], false);
+					break;
+				case '../admin/.htpasswd':
+					$error = false;
+					echo 'admin:lJ2YAeSC82wf2';
+					break;
+				default:
+					break;
+			}
+		}
+		if ($error === true) {
+?>
+	<b>Warning:</b> main(pages/$page): failed to open stream: No such file or directory in <b>/home/hackattacks/public_html/challenges/index.php</b> on line <b>137</b>
+	<br><br>
+	<a href="../challenge/admin">Login</a>
+<?php
+		}
+	}
 } //////////////////////////
 ?>
-	<button type="submit" id="submit">Submit</button>
+	<div id="submit-wrap">
+		<button type="submit" name="leave" id="leave" onclick="return confirm('Are you sure you want to leave the game?')">Leave Game</button>
+<?php
+// Challenges which dont need submit
+if ($lang_info == 'Capture the Flag' && $challenge_num === 2 && $_GET['file'] == 'password.php') {}
+elseif ($lang_info == 'Capture the Flag' && $challenge_num === 4) {}
+else {
+?>
+		<button type="submit" id="submit">Submit</button>
+<?php
+}
+?>
+
+	</div>
 	<div id="answer">
 		<?php echo $answer; ?>
 	</div>
@@ -649,6 +914,8 @@ else {
 <div id="timer"></div>
 
 <script>
+var alerted = false;
+
 var mins = <?php echo $minutes; ?>;
 var ms = mins * 60 * 1000;
 var countDownDate = (<?php echo $start_time; ?> * 1000) + ms;
@@ -672,7 +939,8 @@ var x = setInterval(function() {
 		clearInterval(x);
 		document.getElementById("timer").innerHTML = "0:00";
 		alert('Returning to home page');
-		window.location = '../index.php';
+		window.alerted = true;
+		window.location = 'index.php';
 	}
 }, 1000);
 </script>
@@ -714,8 +982,16 @@ function opponent_refresh() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '../opponent.php', true);
 	xhr.onreadystatechange = function() {
-		if(xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== '') {
-			document.getElementById('opponent').innerHTML = xhr.responseText;
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			var resp = xhr.responseText;
+			var data = JSON.parse(resp);
+			if (data) {
+				document.getElementById('opponent').innerHTML = data.text;
+				if (data.left === '1' && window.alerted == false) {
+					alert('Your opponent left the game.\nReturning to home page.');
+					window.location = '../index.php';
+				}
+			}
 		}
 	}
 	xhr.send();

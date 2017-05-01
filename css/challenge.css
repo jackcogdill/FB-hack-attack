@@ -39,9 +39,17 @@ input[type='text']#code {
 	font-size: 1.25em !important;
 }
 
-#submit {
+#submit-wrap {
 	margin-top: 1em;
 	float: right;
+}
+
+#submit {
+
+}
+
+#leave {
+	margin-right: 1em;
 }
 
 /*input[type=submit]#submit {

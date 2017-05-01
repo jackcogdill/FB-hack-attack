@@ -1,0 +1,11 @@
+sudo sh -c "echo -n 'admin:' >> /etc/nginx/.htpasswd"
+sudo sh -c "openssl passwd -crypt >> /etc/nginx/.htpasswd"
+
+vim /etc/nginx/sites-enabled/default
+Add:
+		location /challenge/admin {
+			auth_basic "Restricted Content";
+			auth_basic_user_file /etc/nginx/.htpasswd;
+		}
+
+/etc/init.d/nginx restart

@@ -1,0 +1,7 @@
+<h1>Welcome!</h1><br>
+
+This site is currently in progress.<br>
+Click <a href="?page=contact.txt">here</a> for information on how to contact me!<br>
+<br>
+
+<a href="../challenge/admin">Admin Panel</a>
