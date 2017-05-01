@@ -527,6 +527,9 @@ elseif ($chall_flag) {
 			elseif ($winner == $opponent) {
 				$answer = '<span class="correct">That\'s correct, but your opponent got it first.</span>';
 			}
+			else {
+				$answer = '<span class="correct">Correct! Already got points.</span>';
+			}
 		}
 		else {
 			$answer = '<span class="correct">'. $incorrect_str .'</span>';
