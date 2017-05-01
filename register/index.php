@@ -119,7 +119,7 @@ require_once("../head_top.php");
 require_once("../head_bottom.php");
 ?>
 
-<a class="logo" href="../"> Hack Attack </a>
+<a class="mainlogo logo" href="../"> Hack Attack </a>
 <form class="login" action="../register/index.php" method="POST">
 <?php
 if (!empty($bad_notice)) {

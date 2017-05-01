@@ -4,8 +4,17 @@ html, body {
 	height: 100%;
 	overflow: none;
 	font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', sans-serif;
-	color: #F7F7F7;
+	color: #fafafa;
 	background: black;
+}
+
+::selection {
+	background: #FF0;
+	color: #000000;
+}
+::-moz-selection {
+	background: #FF0;
+	color: #000000;
 }
 
 a, a:visited {
@@ -14,7 +23,11 @@ a, a:visited {
 }
 
 a:active {
-	color: red;
+	color: #FFF;
+}
+
+.mainlogo {
+	text-shadow: 1px 1px 1px #FFF;
 }
 
 .logo {

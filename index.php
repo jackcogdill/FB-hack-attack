@@ -77,7 +77,7 @@ elseif (isset($_GET['ce'])) {
 
 ?>
 
-<a class="logo" href="../"> Hack Attack </a>
+<a class="mainlogo logo" href="../"> Hack Attack </a>
 <hr class="underline">
 <form action="challenge/index.php" method="post">
 <div id="button-wrap">
