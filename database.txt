@@ -65,3 +65,4 @@ insert into challenges (id, language, challenge_num, challenge_info, correct_out
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (11, 'Crypto', 6, 'Find the message within this password protected zip file: <a href="crypt6.zip">crypt6.zip</a>', 'You found me! I\'m the password for crypto 6  (^_^)', 25, 10);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (12, 'CTF', 1, 'Find the password.', 'La4NrQCUvbzscKeL', 2, 3);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (13, 'CTF', 2, 'Enter your age as 1337.', '', 3, 4);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (14, 'CTF', 5, 'Find the secret!!', 'th1s_1s_it!!!', 2, 7);
