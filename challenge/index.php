@@ -12,6 +12,7 @@ $want_opponent = '';
 $language      = '';
 $lang_info     = '';
 $chall_info    = '';
+$challenge_num = 0;
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
@@ -327,10 +328,12 @@ elseif ($chall_flag) {
 				if ($chall_result->num_rows === 1) {
 					$chall_row = $chall_result->fetch_assoc(); // Get row
 
-					$language    = $chall_row['language'];
-					$minutes     = $chall_row['minutes'];
-					$chall_info  = $chall_row['challenge_info'];
-					$out_correct = $chall_row['correct_out'];
+					$language      = $chall_row['language'];
+					$minutes       = $chall_row['minutes'];
+					$chall_info    = $chall_row['challenge_info'];
+					$out_correct   = $chall_row['correct_out'];
+					$challenge_num = $chall_row['challenge_num'];
+
 
 					$lang_info = $language;
 
@@ -622,6 +625,10 @@ else {
 	$value = 'Answer';
 	if ($lang_info == 'Capture the Flag') {
 		$value = 'Password';
+
+		if ($challenge_num === 1) {
+			echo '<!-- Good job! You found the password: "La4NrQCUvbzscKeL" -->';
+		}
 	}
 ?>
 	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
