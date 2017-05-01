@@ -33,9 +33,8 @@ During our limited time, we created functionality only for Python.
 			- [ ] Test with lots of people
 - [ ] Add titles and hints to challenges
 - [ ] Add more challenges
-	- [ ] Crypto
-		- [X] Created 1
-		- [ ] Make 5 more
+	- [X] Crypto
+		- [X] Created 6 challenges
 	- [ ] Web security
 		- [ ] Make 6 more
 - [X] Security
