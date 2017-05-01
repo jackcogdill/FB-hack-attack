@@ -81,14 +81,14 @@ elseif (isset($_GET['ce'])) {
 <hr class="underline">
 <form action="challenge/index.php" method="post">
 <div id="button-wrap">
-	<div>Java&nbsp;
+	<div>
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
-		<button type="submit" name="language" class="java" value="Java"></button>
+		<button type="submit" name="language" class="java" value="Java">Java</button>
 	</div>
-	<div>Python&nbsp;
+	<div>
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
@@ -96,7 +96,7 @@ elseif (isset($_GET['ce'])) {
 			<option value="3">3</option>
 			<option value="4">4</option>
 		</select>
-		<button type="submit" name="language" class="python" value="Python"></button>
+		<button type="submit" name="language" class="python" value="Python">Python</button>
 	</div>
 	<div id="choose-opponent">
 		<div>
@@ -113,7 +113,7 @@ if (!empty($bad_notice)) {
 			<input type="text" name="specific-opponent" autocomplete="off" placeholder="Random" onkeydown="if (event.keyCode == 13) return false;">
 		</div>
 	</div>
-	<div>Crypto&nbsp;
+	<div>
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
@@ -123,9 +123,9 @@ if (!empty($bad_notice)) {
 			<option value="5">5</option>
 			<option value="6">6</option>
 		</select>
-		<button type="submit" name="language" class="crypto" value="Crypto"></button>
+		<button type="submit" name="language" class="crypto" value="Crypto">Crypto</button>
 	</div>
-	<div>CTF&nbsp;
+	<div>
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
@@ -135,7 +135,7 @@ if (!empty($bad_notice)) {
 			<option value="5">5</option>
 			<option value="6">6</option>
 		</select>
-		<button type="submit" name="language" class="ctf" value="CTF"></button>
+		<button type="submit" name="language" class="ctf" value="CTF">CTF</button>
 	</div>
 </div>
 </form>

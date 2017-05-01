@@ -1,17 +1,17 @@
 .java {
-	background: url('../images/java.png');
+
 }
 
 .python {
-	background: url('../images/python.png');
+
 }
 
 .crypto {
-	background: #fff;
+
 }
 
 .ctf {
-	background: #fff;
+
 }
 
 .center {
@@ -69,17 +69,27 @@
 	margin: auto;
 	margin-bottom: 3em;
 	font-size: 1em;
-	opacity: 0.2;
-	border: 1px solid #000;
+
+	background: transparent;
+	color: #d0d0d0;
+	border: 1px solid #b0b0b0;
+
+	-moz-box-shadow:    inset 0 0 6em #131313;
+	-webkit-box-shadow: inset 0 0 6em #131313;
+	box-shadow:         inset 0 0 6em #131313;
 }
 
 #button-wrap > div > button:hover {
 	cursor: pointer;
-	background-color: #FFFFFF;
-	opacity: 1;
-	transition: opacity .40s ease-in-out;
-	-moz-transition: opacity .40s ease-in-out;
-	-webkit-transition: opacity .40s ease-in-out;
+
+	border: 1px solid #0198E1;
+	color: #0198E1;
+
+	-o-transition:color .2s ease-out, border .2s ease-out, color 0.3s ease-in, border 0.3s ease-in;
+	-ms-transition:color .2s ease-out, border .2s ease-out, color 0.3s ease-in, border 0.3s ease-in;
+	-moz-transition:color .2s ease-out, border .2s ease-out, color 0.3s ease-in, border 0.3s ease-in;
+	-webkit-transition:color .2s ease-out, border .2s ease-out, color 0.3s ease-in, border 0.3s ease-in;
+	transition:color .2s ease-out, border .2s ease-out, color 0.3s ease-in, border 0.3s ease-in;
 }
 
 #difficulty {
