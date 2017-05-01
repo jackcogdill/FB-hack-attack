@@ -122,6 +122,7 @@ if (!empty($bad_notice)) {
 		<select class="difficulty" name="difficulty[]">
 			<option value="">Lvl</option>
 			<option value="1">1</option>
+			<option value="2">2</option>
 		</select>
 		<button type="submit" name="language" class="ctf" value="CTF"></button>
 	</div>
