@@ -21,9 +21,10 @@ During our limited time, we created functionality only for Python.
 	- [ ] Add javascript loading swirl
 - [ ] Email activation
 - [ ] login not login/index.php
-- [ ] Redirect user if challenge is already ended
-	- [ ] Are you sure you want to leave the challenge? (Forfeit)
-	- [ ] Disconnect while waiting: silently remove from database
+	- [ ] Redirects
+	- [ ] Redirect user if challenge is already ended
+	- [ ] Redirect user to challenge if they try to access home
+	- [ ] Add a forfeit button
 - [ ] User wins challenge-> redirect to win page (or popup)
 	- [ ] winner: immediately redirect saying win ?
 	- [ ] loser: redirect once timer runs out
