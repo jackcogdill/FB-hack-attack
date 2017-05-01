@@ -629,6 +629,11 @@ else {
 		if ($challenge_num === 1) {
 			echo '<!-- Good job! You found the password: "La4NrQCUvbzscKeL" -->';
 		}
+		elseif ($challenge_num === 3) {
+			?>
+				<!--<iframe class="game-frame" src="/secret_files/bruh.php"></iframe>-->
+			<?php
+		}
 	}
 ?>
 	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
