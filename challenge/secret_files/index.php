@@ -1,5 +1,5 @@
 <?php
 
-echo `ls`;
+echo '<pre>'. `ls` .'</pre>';
 
 ?>
