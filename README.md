@@ -33,18 +33,18 @@ During our limited time, we created functionality only for Python.
 		- [ ] Thoroughly test for bugs
 			- [ ] Test with lots of people
 - [ ] Add titles and hints to challenges
-- [ ] Add more challenges
+- [X] Add more challenges
 	- [X] Crypto
 		- [X] Created 6 challenges
-	- [ ] Web security
-		- [ ] Make 6 more
+	- [X] Web security
+		- [X] Created 6 challenges
 - [X] Security
 	- [X] Prevent SQL vulns
 	- [X] Hash passwords
 	- [ ] Test for more security holes
-- [ ] Fix bugs
+- [X] Fix bugs
 	- [X] Timer broken for Java 1 on windows
 		- [X] Test this on windows
-	- [ ] Python challenge 4 overflow-x, but not Python 3?
+	- [X] Python challenge 4 overflow-x, but not Python 3?
 
 ## Screenshots

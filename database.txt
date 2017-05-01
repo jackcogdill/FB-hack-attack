@@ -68,5 +68,4 @@ insert into challenges (id, language, challenge_num, challenge_info, correct_out
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (14, 'CTF', 3, 'Enter your age as 1337.', '', 5, 4);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (15, 'CTF', 4, 'Info: you must be using the "HackAttacks" web browser.', '', 6, 5);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (16, 'CTF', 5, 'Find the secret!!<br>Hint: Man vs machine', 'th1s_1s_it!!!', 15, 7);
-
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (17, 'CTF', 6, 'Hint: My friend John knows the hash', '', 25, 12);
