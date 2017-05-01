@@ -904,7 +904,7 @@ else {
 					break;
 				case '../admin/.htpasswd':
 					$error = false;
-					echo 'admin:lJ2YAeSC82wf2';
+					echo 'admin:cat';
 					break;
 				default:
 					break;
