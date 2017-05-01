@@ -361,15 +361,28 @@ elseif ($chall_flag) {
 		$java_class = 'Ha' . hash('adler32', $hash1);
 	}
 
+	// Code
+	$code = $_POST['code'];
+
 	// For CTF 2
-	if ($language == 'CTF' && $challenge_num === 2 && !isset($_GET['file'])) {
-		header('Location: ../challenge/index.php?file=login.php');
-		die("Redirecting");
+	if ($language == 'CTF') {
+		switch ($challenge_num) {
+			case 2:
+				if (!isset($_GET['file'])) {
+					header('Location: ../challenge/index.php?file=login.php');
+					die("Redirecting");
+				}
+				break;
+			case 3:
+			case 4:
+				$code = "placeholder";
+				break;
+			default:
+				break;
+		}
 	}
 
-	if (!empty($_POST['code'])) {
-		$code = $_POST['code'];
-
+	if (!empty($code)) {
 		// Filter non-ascii characters
 		$code = iconv("UTF-8", "ASCII//IGNORE", $code);
 
@@ -463,6 +476,20 @@ elseif ($chall_flag) {
 								else {
 									$out = 'wrong';
 								}
+							}
+							break;
+						case 4:
+							$ua = $_SERVER['HTTP_USER_AGENT'];
+							$chall_info .= '<br><br><strong>User agent:</strong> ' . $ua;
+
+							$out_correct = 'ctf4 correct';
+							// Make the user win
+							if ($ua === 'HackAttacks') {
+								$out = 'ctf4 correct';
+							}
+							// Make the user lose
+							else {
+								$out = 'wrong';
 							}
 							break;
 						default:
@@ -769,11 +796,7 @@ else {
 <?php
 		}
 	}
-	if ($lang_info == 'Capture the Flag' && $challenge_num === 3) {
-?>
-	<input type="hidden" id="code" name="code" value="placeholder">
-<?php
-	}
+	if ($lang_info == 'Capture the Flag' && ($challenge_num === 3 || $challenge_num === 4)) {}
 	elseif ($lang_info == 'Capture the Flag' && $challenge_num === 2 && isset($_GET['file']) && $_GET['file'] === 'password.php') {
 		echo 'administrator:h2L2AweW';
 	}
@@ -785,7 +808,9 @@ else {
 } //////////////////////////
 
 
+// Challenges which dont need submit
 if ($lang_info == 'Capture the Flag' && $challenge_num === 2 && $_GET['file'] == 'password.php') {}
+elseif ($lang_info == 'Capture the Flag' && $challenge_num === 4) {}
 else {
 ?>
 	<button type="submit" id="submit">Submit</button>
