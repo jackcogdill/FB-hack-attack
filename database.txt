@@ -65,6 +65,6 @@ insert into challenges (id, language, challenge_num, challenge_info, correct_out
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (11, 'Crypto', 6, 'Find the message within this password protected zip file: <a href="crypt6.zip">crypt6.zip</a>', 'You found me! I\'m the password for crypto 6  (^_^)', 25, 10);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (12, 'CTF', 1, 'Find the password.', 'La4NrQCUvbzscKeL', 2, 3);
 insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (13, 'CTF', 2, '<span style="color: red;">Error loading password.php</span>', 'h2L2AweW', 3, 4);
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (14, 'CTF', 3, 'Enter your age as 1337.', '', 3, 4);
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (15, 'CTF', 4, 'Info: you must be using the "HackAttacks" web browser.', '', 3, 4);
-insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (16, 'CTF', 5, 'Find the secret!!<br>Hint: Man vs machine', 'th1s_1s_it!!!', 2, 7);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (14, 'CTF', 3, 'Enter your age as 1337.', '', 5, 4);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (15, 'CTF', 4, 'Info: you must be using the "HackAttacks" web browser.', '', 6, 5);
+insert into challenges (id, language, challenge_num, challenge_info, correct_out, points, minutes) values (16, 'CTF', 5, 'Find the secret!!<br>Hint: Man vs machine', 'th1s_1s_it!!!', 15, 7);
