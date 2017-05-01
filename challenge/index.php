@@ -809,7 +809,7 @@ else {
 	}
 	else {
 ?>
-	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
+	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false" autocomplete="off">
 <?php
 	}
 	if ($lang_info == 'Capture the Flag' && $challenge_num === 6) {
