@@ -361,6 +361,12 @@ elseif ($chall_flag) {
 		$java_class = 'Ha' . hash('adler32', $hash1);
 	}
 
+	// For CTF 2
+	if ($language == 'CTF' && $challenge_num === 2 && !isset($_GET['file'])) {
+		header('Location: ../challenge/index.php?file=login.php');
+		die("Redirecting");
+	}
+
 	if (!empty($_POST['code'])) {
 		$code = $_POST['code'];
 
@@ -445,19 +451,23 @@ elseif ($chall_flag) {
 					$out = $code;
 					break;
 				case 'CTF':
-					if (isset($_POST['ctf2-age'])) {
-						$out_correct = 'ctf2 correct';
-						// Make the user win
-						if ($_POST['ctf2-age'] == '1337') {
-							$out = 'ctf2 correct';
-						}
-						// Make the user lose
-						else {
-							$out = 'wrong';
-						}
-					}
-					else {
-						$out = $code;
+					switch ($challenge_num) {
+						case 3:
+							if (isset($_POST['ctf3-age'])) {
+								$out_correct = 'ctf3 correct';
+								// Make the user win
+								if ($_POST['ctf3-age'] == '1337') {
+									$out = 'ctf3 correct';
+								}
+								// Make the user lose
+								else {
+									$out = 'wrong';
+								}
+							}
+							break;
+						default:
+							$out = $code;
+							break;
 					}
 					break;
 				default:
@@ -619,9 +629,13 @@ window.setInterval(redirect, 500);
 }
 //////////////////////////////////////////////////
 elseif ($chall_flag) {
+	$action = '../challenge/index.php';
+	if ($lang_info == 'Capture the Flag' && $challenge_num === 2) {
+		$action = '../challenge/index.php?file=login.php';
+	}
 ?>
 
-<form id="challenge" action="../challenge/index.php" method="post">
+<form id="challenge" action="<?php echo $action; ?>" method="post">
 	<div id="language-info">
 		<?php echo $lang_info; ?>
 	</div>
@@ -644,9 +658,9 @@ else {
 		if ($challenge_num === 1) {
 			echo '<!-- Good job! You found the password: "La4NrQCUvbzscKeL" -->';
 		}
-		elseif ($challenge_num === 2) {
+		elseif ($challenge_num === 3) {
 ?>
-	<select name="ctf2-age">
+	<select name="ctf3-age">
 		<option value="">Age</option>
 		<option value="0">0</option>
 		<option value="1">1</option>
@@ -752,10 +766,13 @@ else {
 <?php
 		}
 	}
-	if ($challenge_num === 2) {
+	if ($lang_info == 'Capture the Flag' && $challenge_num === 3) {
 ?>
 	<input type="hidden" id="code" name="code" value="placeholder">
 <?php
+	}
+	elseif ($lang_info == 'Capture the Flag' && $challenge_num === 2 && isset($_GET['file']) && $_GET['file'] === 'password.php') {
+		echo 'administrator:h2L2AweW';
 	}
 	else {
 ?>
@@ -763,8 +780,15 @@ else {
 <?php
 	}
 } //////////////////////////
+
+
+if ($lang_info == 'Capture the Flag' && $challenge_num === 2 && $_GET['file'] == 'password.php') {}
+else {
 ?>
 	<button type="submit" id="submit">Submit</button>
+<?php
+}
+?>
 	<div id="answer">
 		<?php echo $answer; ?>
 	</div>
