@@ -86,7 +86,7 @@ elseif (isset($_GET['ce'])) {
 			<option value="">Lvl</option>
 			<option value="1">1</option>
 		</select>
-		<button type="submit" name="language" class="java" value="Java">Java</button>
+		<button type="submit" name="language" value="Java">Java</button>
 	</div>
 	<div>
 		<select class="difficulty" name="difficulty[]">
@@ -96,7 +96,7 @@ elseif (isset($_GET['ce'])) {
 			<option value="3">3</option>
 			<option value="4">4</option>
 		</select>
-		<button type="submit" name="language" class="python" value="Python">Python</button>
+		<button type="submit" name="language" value="Python">Python</button>
 	</div>
 	<div id="choose-opponent">
 		<div>
@@ -123,7 +123,7 @@ if (!empty($bad_notice)) {
 			<option value="5">5</option>
 			<option value="6">6</option>
 		</select>
-		<button type="submit" name="language" class="crypto" value="Crypto">Crypto</button>
+		<button type="submit" name="language" value="Crypto">Crypto</button>
 	</div>
 	<div>
 		<select class="difficulty" name="difficulty[]">
@@ -135,7 +135,7 @@ if (!empty($bad_notice)) {
 			<option value="5">5</option>
 			<option value="6">6</option>
 		</select>
-		<button type="submit" name="language" class="ctf" value="CTF">CTF</button>
+		<button type="submit" name="language" value="CTF">CTF</button>
 	</div>
 </div>
 </form>
