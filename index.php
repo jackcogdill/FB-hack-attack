@@ -126,6 +126,7 @@ if (!empty($bad_notice)) {
 			<option value="3">3</option>
 			<option value="4">4</option>
 			<option value="5">5</option>
+			<option value="6">6</option>
 		</select>
 		<button type="submit" name="language" class="ctf" value="CTF"></button>
 	</div>

@@ -13,6 +13,7 @@ $language      = '';
 $lang_info     = '';
 $chall_info    = '';
 $challenge_num = 0;
+$code          = '';
 
 
 $match_flag   = isset($_POST['language']); // Match up users instead of display challenge
@@ -362,7 +363,9 @@ elseif ($chall_flag) {
 	}
 
 	// Code
-	$code = $_POST['code'];
+	if (isset($_POST['code'])) {
+		$code = $_POST['code'];
+	}
 
 	// For CTF 2
 	if ($language == 'CTF') {
@@ -376,6 +379,10 @@ elseif ($chall_flag) {
 			case 3:
 			case 4:
 				$code = "placeholder";
+				break;
+			case 6:
+				// Answer for ctf 6
+				$out_correct = $row['id'];
 				break;
 			default:
 				break;
@@ -796,7 +803,7 @@ else {
 <?php
 		}
 	}
-	if ($lang_info == 'Capture the Flag' && ($challenge_num === 3 || $challenge_num === 4)) {}
+	if ($lang_info == 'Capture the Flag' && ($challenge_num === 3 || $challenge_num === 4 || $challenge_num === 6)) {}
 	elseif ($lang_info == 'Capture the Flag' && $challenge_num === 2 && isset($_GET['file']) && $_GET['file'] === 'password.php') {
 		echo 'administrator:h2L2AweW';
 	}
@@ -804,6 +811,31 @@ else {
 ?>
 	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false">
 <?php
+	}
+	if ($lang_info == 'Capture the Flag' && $challenge_num === 6) {
+		$error = true;
+		if (isset($_GET['page'])) {
+			switch($_GET['page']) {
+				case 'contact.txt':
+				case 'home.txt':
+					$error = false;
+					echo file_get_contents('pages/' . $_GET['page'], false);
+					break;
+				case '../admin/.htpasswd':
+					$error = false;
+					echo 'admin:lJ2YAeSC82wf2';
+					break;
+				default:
+					break;
+			}
+		}
+		if ($error === true) {
+?>
+	<b>Warning:</b> main(pages/$page): failed to open stream: No such file or directory in <b>/home/hackattacks/public_html/challenges/index.php</b> on line <b>137</b>
+	<br><br>
+	<a href="../challenge/admin">Login</a>
+<?php
+		}
 	}
 } //////////////////////////
 
