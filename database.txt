@@ -1,74 +1,3 @@
-1. Setup database:
-================================
-create database quiz;
-use quiz;
-
-2. Give access permissions
-================================
-GRANT ALL PRIVILEGES ON quiz.*
-TO 'quizer'@'localhost'
-IDENTIFIED BY 'quizme';
-
-3. Create user table:
-================================
-CREATE TABLE users (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	first_name VARCHAR(55) NOT NULL,
-	last_name VARCHAR(55) NOT NULL,
-	username VARCHAR(55) NOT NULL,
-	email VARCHAR(55) NOT NULL,
-	password VARCHAR(255) NOT NULL,
-	salt VARCHAR(55) NOT NULL,
-	points INT(11),
-	PRIMARY KEY (id)
-);
-
-4. Create weighting list table:
-================================
-CREATE TABLE waiting (
-	id INT(11) NOT NULL AUTO_INCREMENT,
-	username VARCHAR(55) NOT NULL,
-	first_name VARCHAR(55) NOT NULL,
-	last_name VARCHAR(55) NOT NULL,
-	language VARCHAR(55) NOT NULL,
-	points INT(11),
-	PRIMARY KEY (id)
-);
-
-5. Create challenges table:
-================================
-CREATE TABLE challenges (
-	id INT(11) NOT NULL,
-	language VARCHAR(55) NOT NULL,
-	challenge_num INT(11) NOT NULL,
-	challenge_info VARCHAR(255) NOT NULL,
-	correct_out VARCHAR(255) NOT NULL,
-	points INT(11) NOT NULL,
-	minutes INT(11) NOT NULL,
-	PRIMARY KEY (id)
-);
-
-6. Create ongoing challenges table:
-==================================
-CREATE TABLE ongoing (
-	id VARCHAR(255) NOT NULL,
-	challenge_id INT(11) NOT NULL,
-	user1 VARCHAR(55) NOT NULL,
-	user2 VARCHAR(55) NOT NULL,
-	first_name1 VARCHAR(55) NOT NULL,
-	last_name1 VARCHAR(55) NOT NULL,
-	first_name2 VARCHAR(55) NOT NULL,
-	last_name2 VARCHAR(55) NOT NULL,
-	start_time INT(11) NOT NULL,
-	winner VARCHAR(55),
-	points1 INT(11) NOT NULL,
-	points2 INT(11) NOT NULL,
-	PRIMARY KEY (id)
-);
-
-
-
-
 /——————————————————————————————\
 |          Copy Pasta          |
 \——————————————————————————————/
@@ -83,7 +12,8 @@ CREATE TABLE users (
 	last_name VARCHAR(55) NOT NULL,
 	username VARCHAR(55) NOT NULL,
 	email VARCHAR(55) NOT NULL,
-	password VARCHAR(55) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	salt VARCHAR(55) NOT NULL,
 	points INT(11),
 	PRIMARY KEY (id)
 );
