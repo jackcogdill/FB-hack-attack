@@ -1,7 +1,7 @@
 #language-info {
 	font-size: 1.4em;
 	text-decoration: underline;
-	color: #88d388;
+	color: #3B5998;
 	margin-bottom: 0.5em;
 }
 
@@ -87,7 +87,7 @@ input[type=submit]#submit:hover {
 	color: red;
 	font-size: 2em;
 	padding: 0.4em 0;
-	border: 1px solid #FFA2A2;
+	/*border: 1px solid #FFA2A2;*/
 	-webkit-border-radius: 0.3em;
 	-moz-border-radius: 0.3em;
 	border-radius: 0.3em;

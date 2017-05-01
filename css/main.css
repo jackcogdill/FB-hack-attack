@@ -4,10 +4,12 @@ html, body {
 	height: 100%;
 	overflow: none;
 	font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', sans-serif;
+	color: #F7F7F7;
+	background: black;
 }
 
 a, a:visited {
-	color: #88d388;
+	color: #3B5998;
 	text-decoration: underline;
 }
 
@@ -16,7 +18,8 @@ a:active {
 }
 
 .logo {
-	color: #88d388;
+	/* color: #88d388; */
+	color: #3B5998;
 	font-size: 3em;
 	font-family: 'Press Start 2P', cursive;
 	text-align: center;
@@ -52,6 +55,7 @@ input {
 	font-size: 1em;
 	margin: 0 auto;
 	display: block;
+	color: #F7F7F7;
 }
 
 input::-webkit-input-placeholder { color: #ccc; } /* Chrome/Opera/Safari */
@@ -60,7 +64,7 @@ input:-ms-input-placeholder {      color: #ccc; } /* IE 10+ */
 input:-moz-placeholder {           color: #ccc; } /* Firefox 18- */
 
 input:focus {
-	border-bottom: 2px #88d388 solid;
+	border-bottom: 2px #3B5998 solid;
 }
 
 #login-after {
