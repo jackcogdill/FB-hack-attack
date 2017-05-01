@@ -10,7 +10,7 @@ if (isset($_SESSION['user']['hash_id'])) {
 
 ?>
 
-<form id="submit-this" action="../../challenge" method="post">
+<form id="submit-this" action="/challenge" method="post">
 	<input type="hidden" name="code" value="<?php echo $value; ?>">
 </form>
 
