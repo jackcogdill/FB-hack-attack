@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: secret_files/password.txt
+Disallow: secret_files/*
