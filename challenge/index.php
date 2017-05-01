@@ -393,7 +393,7 @@ elseif ($chall_flag) {
 		// Filter non-ascii characters
 		$code = iconv("UTF-8", "ASCII//IGNORE", $code);
 
-		$incorrect_str = 'Sorry, try again';
+		$incorrect_str = 'Sorry, that\'s incorrect. Try again.';
 
 		// Quick security measures
 		function safe_code($str, $lang) {
