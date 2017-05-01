@@ -3,25 +3,24 @@
 // Connect to database and start session
 require_once("../secure.php");
 
-// Reset any matches
-// =====================
-// Ongoing
+// Delete from any ongoing games
 $user = $_SESSION['user']['username'];
-$og_stmt = $connect->prepare('
+$delo_stmt = $connect->prepare('
 	DELETE FROM ongoing
 	WHERE (
 		user1 = ? OR
 		user2 = ?
 	)
+	LIMIT 1
 ');
-if ($og_stmt) {
-	$og_stmt->bind_param(
+if ($delo_stmt) {
+	$delo_stmt->bind_param(
 		"ss",
 		$user,
 		$user
 	);
-	$og_stmt->execute();
-	$og_stmt->close();
+	$delo_stmt->execute();
+	$delo_stmt->close();
 }
 
 // Waiting

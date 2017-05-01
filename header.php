@@ -18,7 +18,18 @@ if (trim($up) !== '') {
 		<div id="user-info">
 			<?php echo $name . ' | ' . $pts . " points";?>
 		</div>
-		<a href=<?php echo $up . "logout"; ?>>Logout</a>
+<?php
+if (strpos($_SERVER['REQUEST_URI'], 'challenge') !== false) {
+?>
+	<a href="<?php echo $up . 'logout'; ?>" onclick="return confirm('Are you sure you want to logout?\nYou will leave the game.')">Logout</a>
+<?php
+}
+else {
+?>
+	<a href="<?php echo $up . 'logout'; ?>">Logout</a>
+<?php
+}
+?>
 	</div>
 </div>
 

@@ -4,6 +4,35 @@ $up = "../";
 // Connect to database and start session
 require_once("../secure.php");
 
+function destroy_game($usr) {
+	global $connect;
+	$delo_stmt = $connect->prepare('
+		DELETE FROM ongoing
+		WHERE (
+			user1 = ? OR
+			user2 = ?
+		)
+		LIMIT 1
+	');
+	if ($delo_stmt) {
+		$delo_stmt->bind_param(
+			"ss",
+			$usr,
+			$usr
+		);
+		$delo_stmt->execute();
+		$delo_stmt->close();
+	}
+
+	// Delete hash id
+	if (isset($_SESSION['user']['hash_id'])) {
+		unset($_SESSION['user']['hash_id']);
+	}
+
+	header('Location: ../index.php');
+	die("Redirecting");
+}
+
 $difficulty    = 0;
 $code          = '';
 $answer        = '';
@@ -20,6 +49,7 @@ $match_flag   = isset($_POST['language']); // Match up users instead of display 
 $chall_flag   = isset($_SESSION['user']['hash_id']); // Display the ongoing challenge
 $waiting_flag = isset($_SESSION['user']['waiting']); // Currently waiting
 $code_flag    = false;
+$leave_flag = isset($_POST['leave']);
 
 if (isset($_POST['difficulty'])) {
 	foreach($_POST['difficulty'] as $value) {
@@ -291,15 +321,19 @@ elseif ($chall_flag) {
 		$sel_stmt->execute();
 
 		$result = $sel_stmt->get_result();
-		if ($result->num_rows === 1) {
+		// Challenge no longer exists, redirect
+		if ($result->num_rows === 0) {
+			header('Location: ../index.php?ce');
+			die("Redirecting");
+		}
+		elseif ($result->num_rows === 1) {
 			$row = $result->fetch_assoc(); // Get row
-
 
 			$start_time = $row['start_time'];
 			$winner = $row['winner'];
 
 			$opponent = NULL;
-			$user   = $_SESSION['user']['username'];
+			$user     = $_SESSION['user']['username'];
 			// Opponent is user2
 			if ($row['user1'] == $user) {
 				$opponent = $row['user2'];
@@ -310,6 +344,11 @@ elseif ($chall_flag) {
 			}
 
 			$challenge_id = $row['challenge_id'];
+
+			// Leave the game
+			if ($leave_flag) {
+				destroy_game($user);
+			}
 
 
 			$chall_stmt = $connect->prepare('
@@ -335,8 +374,17 @@ elseif ($chall_flag) {
 					$out_correct   = $chall_row['correct_out'];
 					$challenge_num = $chall_row['challenge_num'];
 
-
 					$lang_info = $language;
+
+
+					// Challenge is over
+					// Delete from ongoing and redirect
+					// ==============================================
+					if (time() - $start_time > $minutes * 60) {
+						destroy_game($user);
+					}
+					// ==============================================
+
 
 					// Code or other (cypto, etc) (code_flag)
 					switch ($language) {
@@ -590,6 +638,14 @@ elseif ($chall_flag) {
 		$sel_stmt->close();
 	}
 }
+elseif ($waiting_flag) {
+
+}
+// Nothing to display, redirect
+else {
+	header('Location: ../index.php?ce');
+	die("Redirecting");
+}
 
 
 
@@ -809,7 +865,7 @@ else {
 	}
 	else {
 ?>
-	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false" autocomplete="off">
+	<input type="text" id="code" name="code" placeholder="<?php echo $value; ?>" spellcheck="false" autocomplete="off" onkeydown="if (event.keyCode == 13) return false;">
 <?php
 	}
 	if ($lang_info == 'Capture the Flag' && $challenge_num === 6) {
@@ -838,17 +894,21 @@ else {
 		}
 	}
 } //////////////////////////
-
-
+?>
+	<div id="submit-wrap">
+		<button type="submit" name="leave" id="leave" onclick="return confirm('Are you sure you want to leave the game?')">Leave Game</button>
+<?php
 // Challenges which dont need submit
 if ($lang_info == 'Capture the Flag' && $challenge_num === 2 && $_GET['file'] == 'password.php') {}
 elseif ($lang_info == 'Capture the Flag' && $challenge_num === 4) {}
 else {
 ?>
-	<button type="submit" id="submit">Submit</button>
+		<button type="submit" id="submit">Submit</button>
 <?php
 }
 ?>
+
+	</div>
 	<div id="answer">
 		<?php echo $answer; ?>
 	</div>
@@ -857,6 +917,8 @@ else {
 <div id="timer"></div>
 
 <script>
+var alerted = false;
+
 var mins = <?php echo $minutes; ?>;
 var ms = mins * 60 * 1000;
 var countDownDate = (<?php echo $start_time; ?> * 1000) + ms;
@@ -880,7 +942,8 @@ var x = setInterval(function() {
 		clearInterval(x);
 		document.getElementById("timer").innerHTML = "0:00";
 		alert('Returning to home page');
-		window.location = '../index.php';
+		window.alerted = true;
+		window.location = 'index.php';
 	}
 }, 1000);
 </script>
@@ -922,8 +985,16 @@ function opponent_refresh() {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '../opponent.php', true);
 	xhr.onreadystatechange = function() {
-		if(xhr.readyState == 4 && xhr.status == 200 && xhr.responseText !== '') {
-			document.getElementById('opponent').innerHTML = xhr.responseText;
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			var resp = xhr.responseText;
+			var data = JSON.parse(resp);
+			if (data) {
+				document.getElementById('opponent').innerHTML = data.text;
+				if (data.left === '1' && window.alerted == false) {
+					alert('Your opponent left the game.\nReturning to home page.');
+					window.location = '../index.php';
+				}
+			}
 		}
 	}
 	xhr.send();
