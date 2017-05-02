@@ -43,7 +43,7 @@ if ($wait_stmt) {
 unset($_SESSION['user']);
 
 // Redirect to login page
-header("Location: ../login");
+header("Location: /login");
 die("Redirecting");
 
 ?>
