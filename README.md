@@ -12,26 +12,18 @@ During our limited time, we created functionality only for Python.
 
 ## Todo
 - [X] Add link to main page on challenge page
-- [ ] Put src code in footer
+- [X] Put src code in footer
 - [X] No lvl selected
-- [ ] Reskin site
-	- [ ] Switch to using sass
-	- [ ] Change highlight color
-	- [ ] Use SVGs
-	- [ ] Add javascript loading swirl
-- [ ] Email activation
-- [ ] login not login/index.php
-	- [ ] Redirects
-	- [ ] Redirect user if challenge is already ended
-	- [ ] Redirect user to challenge if they try to access home
-	- [ ] Add a forfeit button
-- [ ] User wins challenge-> redirect to win page (or popup)
-	- [ ] winner: immediately redirect saying win ?
-	- [ ] loser: redirect once timer runs out
-- [ ] Tournament functionality
+- [X] Reskin site
+	- [X] Change highlight color
+	- [X] Add javascript loading swirl
+- [X] Redirects
+	- [X] Redirect user if challenge is already ended
+	- [X] Redirect user to challenge if they try to access home
+	- [X] Add a leave game button
+- [X] Tournament functionality
 	- [X] Enter username to pick opponent
-		- [ ] Thoroughly test for bugs
-			- [ ] Test with lots of people
+		- [X] Thoroughly test for bugs
 - [X] Add more challenges
 	- [X] Crypto
 		- [X] Created 6 challenges
@@ -40,7 +32,6 @@ During our limited time, we created functionality only for Python.
 - [X] Security
 	- [X] Prevent SQL vulns
 	- [X] Hash passwords
-	- [ ] Test for more security holes
 - [X] Fix bugs
 	- [X] Timer broken for Java 1 on windows
 		- [X] Test this on windows
