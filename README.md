@@ -11,7 +11,7 @@ Also thanks to Justin Gardner for helping with security.
 Forked from [Hack Attack](https://github.com/jackcogdill/hack-attack).  
 Hack Attack is a website built for [Bitcamp 2017](http://bitca.mp/) (a hackathon at [UMD](https://www.umd.edu/)). It allows two players to challenge each other in programming puzzles designed to help them learn a specific language.  
 
-This website was expanded on and improved for the Facebook event hosted by Hackers@VT hosted on May 2nd at Virginia Tech. We used a tournament style bracket and let over 95 participants compete in the cryptography and capture the flag challenges.
+This website was expanded on and improved for the "Facebook with Benefits" event hosted by Hackers@VT on May 2nd at Virginia Tech. We used a tournament style bracket and let over 95 participants compete in the cryptography and capture the flag challenges.
 
 ## Screenshots
 ![Image 1](../screenshots/screenshots/1.png?raw=true)
