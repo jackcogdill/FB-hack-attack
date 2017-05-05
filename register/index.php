@@ -8,6 +8,9 @@ $bad_notice = '';
 if (isset($_GET['utaken'])) {
 	$bad_notice = 'Username has already been taken.';
 }
+elseif (isset($_GET['bad'])) {
+	$bad_notice = 'Only your password may contain non-alphanumeric characters.';
+}
 elseif (isset($_GET['etaken'])) {
 	$bad_notice = 'Email has already been taken.';
 }
@@ -30,6 +33,21 @@ if (isset($_POST['submit'])) {
 		header('Location: ../register/index.php?blank');
 		die("Redirecting");
 	}
+
+	if (
+		mb_check_encoding($first_name, 'BASE64') === false ||
+		mb_check_encoding($last_name,  'BASE64') === false ||
+		mb_check_encoding($username,   'BASE64') === false ||
+		mb_check_encoding($email,      'BASE64') === false
+	) {
+		header('Location: ../register/index.php?bad');
+		die("Redirecting");
+	}
+	// Just in case, filter non-BASE64 characters
+	$first_name = iconv("UTF-8", "BASE64//IGNORE", $first_name);
+	$last_name  = iconv("UTF-8", "BASE64//IGNORE", $last_name);
+	$username   = iconv("UTF-8", "BASE64//IGNORE", $username);
+	$email      = iconv("UTF-8", "BASE64//IGNORE", $email);
 
 	// Make sure username is unique
 	$usr_stmt = $connect->prepare('
